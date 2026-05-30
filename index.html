@@ -43,6 +43,8 @@
 <script>
 const board = document.getElementById("board");
 
+let turn = "white";
+
 for (let i = 0; i < 19 * 19; i++) {
     const cell = document.createElement("div");
     cell.className = "cell";
@@ -59,7 +61,13 @@ for (let i = 0; i < 19 * 19; i++) {
                 stone.remove();
             } else {
                 const s = document.createElement("div");
-                s.className = "stone black";
+                if (turn == "white"){
+                    s.className = "stone white";
+                    turn = "black";
+                } else {
+                    s.className = "stone black";
+                    turn = "white";
+                }
                 cell.appendChild(s);
             }
         }, 200);
