@@ -2,10 +2,17 @@
 <html>
 <head>
 <style>
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
 #board {
     display: grid;
     grid-template-columns: repeat(19, 30px);
-    width: fit-content;
+    grid-template-rows: repeat(19, 30px);
 }
 
 .cell {
@@ -14,6 +21,11 @@
     border: 1px solid black;
     background: burlywood;
     position: relative;
+    box-sizing: border-box;
+}
+
+.last-move {
+    background: light-purple;
 }
 
 .stone {
@@ -21,8 +33,8 @@
     height: 24px;
     border-radius: 50%;
     position: absolute;
-    top: 3px;
-    left: 3px;
+    top: 2px;
+    left: 2px;
 }
 
 .black {
@@ -34,6 +46,7 @@
     background: radial-gradient(white, rgb(205, 205, 205));
     border: 1px solid black;
 }
+    
 </style>
 </head>
 <body>
@@ -42,6 +55,17 @@
 
 <script>
 const board = document.getElementById("board");
+
+let lastCell = null;
+
+function markLastMove(cell) {
+    if (lastCell) {
+        lastCell.classList.remove("last-move");
+    }
+
+    cell.classList.add("last-move");
+    lastCell = cell;
+}
 
 for (let i = 0; i < 19 * 19; i++) {
     const cell = document.createElement("div");
@@ -55,13 +79,24 @@ for (let i = 0; i < 19 * 19; i++) {
         clickTimer = setTimeout(() => {
             const stone = cell.querySelector(".stone");
 
+            // Remove existing stone
             if (stone) {
                 stone.remove();
-            } else {
-                const s = document.createElement("div");
-                s.className = "stone black";
-                cell.appendChild(s);
+
+                if (cell === lastCell) {
+                    cell.classList.remove("last-move");
+                    lastCell = null;
+                }
+
+                return;
             }
+
+            // Place black stone
+            const s = document.createElement("div");
+            s.className = "stone black";
+            cell.appendChild(s);
+
+            markLastMove(cell);
         }, 200);
     });
 
@@ -73,6 +108,8 @@ for (let i = 0; i < 19 * 19; i++) {
         const s = document.createElement("div");
         s.className = "stone white";
         cell.appendChild(s);
+
+        markLastMove(cell);
     });
 
     board.appendChild(cell);
