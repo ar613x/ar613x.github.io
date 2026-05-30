@@ -33,20 +33,37 @@ body {
     height: 24px;
     border-radius: 50%;
     position: absolute;
-    top: 2px;
-    left: 2px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .black {
-    background: radial-gradient(black, rgb(75, 75, 75));
+    background: radial-gradient(circle at 30% 30%, rgb(75,75,75), black);
     border: 1px solid white;
 }
 
 .white {
-    background: radial-gradient(white, rgb(205, 205, 205));
+    background: radial-gradient(circle at 30% 30%, white, rgb(205,205,205));
     border: 1px solid black;
 }
-    
+
+/* Center 3×3 outline */
+.center-top {
+    border-top: 3px solid red !important;
+}
+
+.center-bottom {
+    border-bottom: 3px solid red !important;
+}
+
+.center-left {
+    border-left: 3px solid red !important;
+}
+
+.center-right {
+    border-right: 3px solid red !important;
+}
 </style>
 </head>
 <body>
@@ -71,15 +88,29 @@ for (let i = 0; i < 19 * 19; i++) {
     const cell = document.createElement("div");
     cell.className = "cell";
 
+    const row = Math.floor(i / 19);
+    const col = i % 19;
+
+    // Outline the center 3×3 area
+    if (row >= 8 && row <= 10) {
+        if (col === 8) cell.classList.add("center-left");
+        if (col === 10) cell.classList.add("center-right");
+    }
+
+    if (col >= 8 && col <= 10) {
+        if (row === 8) cell.classList.add("center-top");
+        if (row === 10) cell.classList.add("center-bottom");
+    }
+
     let clickTimer = null;
 
+    // Single click = black stone OR remove stone
     cell.addEventListener("click", () => {
         clearTimeout(clickTimer);
 
         clickTimer = setTimeout(() => {
             const stone = cell.querySelector(".stone");
 
-            // Remove existing stone
             if (stone) {
                 stone.remove();
 
@@ -91,7 +122,6 @@ for (let i = 0; i < 19 * 19; i++) {
                 return;
             }
 
-            // Place black stone
             const s = document.createElement("div");
             s.className = "stone black";
             cell.appendChild(s);
@@ -100,6 +130,7 @@ for (let i = 0; i < 19 * 19; i++) {
         }, 200);
     });
 
+    // Double click = white stone
     cell.addEventListener("dblclick", () => {
         clearTimeout(clickTimer);
 
