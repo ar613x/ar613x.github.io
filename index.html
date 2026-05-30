@@ -46,11 +46,11 @@ const board = document.getElementById("board");
 const pieceList = []
 
 class Piece {
-    constructor(position, color) {
+    constructor(position, element) {
         pieceList.appendChild(this);
         this.x = position % 19;
         this.y = (position - x) / 19;
-        this.color = color;
+        this.element = element;
     }
 
     static pieceAt(x, y) {
@@ -61,6 +61,14 @@ class Piece {
         }
     }
 
+    getColor() {
+        return this.element.className == "solid black" ? "black" : "white"
+    }
+
+    setColor(color) {
+        this.element.className = color == "black" ? "solid black" : "solid white"
+    }
+
     getNeighbors(sameColor=false) {
         const right = pieceAt(this.x+1, this.y);
         const left = pieceAt(this.x-1, this.y);
@@ -69,7 +77,7 @@ class Piece {
         const neighbors = [right, left, up, down];
         for (const neighbor of neighbors) {
             if (!neighbor) neighbors.remove(neighbor);
-            if (sameColor && (neighbor.color != this.color)) neighbors.remove(neighbor);
+            if (sameColor && (neighbor.getColor() != this.getColor())) neighbors.remove(neighbor);
         }
         return neighbors;
     }
@@ -106,8 +114,8 @@ class Piece {
     }
 
     flipColor() {
-        if (this.color == "white") this.color = "black";
-        else this.color = "white";
+        if (this.getColor() == "white") this.setColor("black");
+        else this.setColor("white");
     }
 
 }
@@ -162,9 +170,9 @@ for (let i = 0; i < 19 * 19; i++) {
                     turn = "white";
                 }
                 cell.appendChild(s);
+                new Piece(i, s);
+                flipPieces();
             }
-            new Piece(i);
-            flipPieces();
         }, 200);
     });
 
