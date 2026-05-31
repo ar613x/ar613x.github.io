@@ -43,7 +43,7 @@
 <script>
 const board = document.getElementById("board");
 
-const pieceList = []
+const pieceList = [];
 
 class Piece {
     constructor(position, element) {
@@ -62,11 +62,11 @@ class Piece {
     }
 
     getColor() {
-        return this.element.className == "solid black" ? "black" : "white"
+        return this.element.className == "solid black" ? "black" : "white";
     }
 
     setColor(color) {
-        this.element.className = color == "black" ? "solid black" : "solid white"
+        this.element.className = (color == "black" ? "solid black" : "solid white");
     }
 
     getNeighbors(sameColor=false) {
@@ -93,7 +93,7 @@ class Piece {
 
         // add new neighbors
         const neighbors = this.getNeighbors(true);
-        neighbors.filter((piece) => {!(piece in foundPieces)})
+        neighbors.filter((piece) => {!(piece in foundPieces)});
         for (const neighbor of neighbors) groupList.appendChild(neighbor);
 
         // count new pieces as found
@@ -126,14 +126,14 @@ class Group {
     }
 
     isSurrounded() {
-        for (const piece in this.pieces) {
+        for (const piece of this.pieces) {
             if (!piece.isSurrounded()) return false;
         } return true;
     }
 }
 
 function flipPieces(secondTime) {
-    const needFlipping = []
+    const needFlipping = [];
     for (const piece of pieceList) {
         if (piece.findGroup().isSurrounded()) {
             if (secondTime) pieceList.remove(piece);
