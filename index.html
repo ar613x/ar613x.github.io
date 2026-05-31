@@ -49,7 +49,7 @@ body {
     border: 1px solid black;
 }
 
-/* Center 3×3 outline */
+/* Center squares outline */
 .center-top {
     border-top: 3px solid red !important;
 }
@@ -92,13 +92,24 @@ for (let i = 0; i < 19 * 19; i++) {
     const row = Math.floor(i / 19);
     const col = i % 19;
 
-    // Outline the center 3×3 area
+    // Outline the center 5×5 area
     if (row >= 6 && row <= 12) {
+        if (col === 6) cell.classList.add("center-left");
+        if (col === 12) cell.classList.add("center-right");
+    }
+
+    if (col >= 6 && col <= 12) {
+        if (row === 6) cell.classList.add("center-top");
+        if (row === 12) cell.classList.add("center-bottom");
+    }
+    
+    // Outline the center 3×3 area
+    if (row >= 8 && row <= 10) {
         if (col === 8) cell.classList.add("center-left");
         if (col === 10) cell.classList.add("center-right");
     }
 
-    if (col >= 6 && col <= 12) {
+    if (col >= 8 && col <= 10) {
         if (row === 8) cell.classList.add("center-top");
         if (row === 10) cell.classList.add("center-bottom");
     }
