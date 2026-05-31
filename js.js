@@ -11,7 +11,7 @@ function markLastMove(cell) {
     lastCell = cell;
 }
 
-for (let i = 0; i < 19 * 19; i++) {
+for (let i = 0; i < 361; i++) {
     const cell = document.createElement("div");
     cell.className = "cell";
 
