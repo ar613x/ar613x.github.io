@@ -42,17 +42,6 @@ for (let i = 0; i < 19 * 19; i++) {
 
     cell.addEventListener("click", () => {
         const stone = cell.querySelector(".stone");
-
-        if (stone) {
-            stone.remove();
-
-            if (cell === lastCell) {
-                cell.classList.remove("last-move");
-                lastCell = null;
-            }
-
-            return;
-        }
         if (sturn == 0) {
             const s = document.createElement("div");
             s.className = "stone black";
