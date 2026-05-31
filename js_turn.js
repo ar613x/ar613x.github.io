@@ -1,3 +1,4 @@
+import {Square} from "./square.js";
 const board = document.getElementById("board");
 
 let lastCell = null;
@@ -10,52 +11,63 @@ function markLastMove(cell) {
     cell.classList.add("last-move");
     lastCell = cell;
 }
+let cells = [];
+for (let row = 0; row < 19; row++) {
+    cells[row] = [];
+    for (let col = 0; col < 19; col++) {
+        cells[row][col] = new Square(row, col, false, false);
+        const cell = document.createElement("div");
+        cell.className = "cell";
 
-for (let i = 0; i < 19 * 19; i++) {
-    const cell = document.createElement("div");
-    cell.className = "cell";
-
-    const row = Math.floor(i / 19);
-    const col = i % 19;
-    cell.id = `${row}-${col}`;
-    // Outline the center 7×7 area
-    if (row >= 6 && row <= 12) {
-        if (col === 6) cell.classList.add("center-left");
-        if (col === 12) cell.classList.add("center-right");
-    }
-
-    if (col >= 6 && col <= 12) {
-        if (row === 6) cell.classList.add("center-top");
-        if (row === 12) cell.classList.add("center-bottom");
-    }
-    
-    // Outline the center 3×3 area
-    if (row >= 8 && row <= 10) {
-        if (col === 8) cell.classList.add("center-left");
-        if (col === 10) cell.classList.add("center-right");
-    }
-
-    if (col >= 8 && col <= 10) {
-        if (row === 8) cell.classList.add("center-top");
-        if (row === 10) cell.classList.add("center-bottom");
-    }
-
-    cell.addEventListener("click", () => {
-        const stone = cell.querySelector(".stone");
-        if (sturn == 0) {
-            const s = document.createElement("div");
-            s.className = "stone black";
-            cell.appendChild(s);
-            sturn = 1;
-        } else {
-            const s = document.createElement("div");
-            s.className = "stone white";
-            cell.appendChild(s);
-            sturn = 0;
+        cell.id = `${row}-${col}`;
+        // Outline the center 7×7 area
+        if (row >= 6 && row <= 12) {
+            if (col === 6) cell.classList.add("center-left");
+            if (col === 12) cell.classList.add("center-right");
         }
 
-        markLastMove(cell);
-    });
+        if (col >= 6 && col <= 12) {
+            if (row === 6) cell.classList.add("center-top");
+            if (row === 12) cell.classList.add("center-bottom");
+        }
+        
+        // Outline the center 3×3 area
+        if (row >= 8 && row <= 10) {
+            if (col === 8) cell.classList.add("center-left");
+            if (col === 10) cell.classList.add("center-right");
+        }
 
-    board.appendChild(cell);
+        if (col >= 8 && col <= 10) {
+            if (row === 8) cell.classList.add("center-top");
+            if (row === 10) cell.classList.add("center-bottom");
+        }
+
+        cell.addEventListener("click", () => {
+            const stone = cell.querySelector(".stone");
+            const square = cells[row][col];
+
+            if (stone) {
+                return;
+            }
+            if (sturn == 0) {
+                const s = document.createElement("div");
+                square.occ = true;
+                square.b = true;
+                s.className = "stone black";
+                cell.appendChild(s);
+                sturn = 1;
+            } else {
+                const s = document.createElement("div");
+                square.occ = true;
+                square.b = false;
+                s.className = "stone white";
+                cell.appendChild(s);
+                sturn = 0;
+            }
+
+            markLastMove(cell);
+        });
+
+        board.appendChild(cell);
+    }
 }

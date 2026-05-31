@@ -1,3 +1,4 @@
+import {Square} from "./square.js";
 const board = document.getElementById("board");
 
 let lastCell = null;
@@ -10,69 +11,76 @@ function markLastMove(cell) {
     cell.classList.add("last-move");
     lastCell = cell;
 }
+let cells = [];
+for (let row = 0; row < 19; row++) {
+    cells[row] = [];
+    for (let col = 0; col < 19; col++) {
+        cells[row][col] = new Square(row, col, false, false);
+        const cell = document.createElement("div");
+        cell.className = "cell";
 
-for (let i = 0; i < 361; i++) {
-    const cell = document.createElement("div");
-    cell.className = "cell";
-
-    const row = Math.floor(i / 19);
-    const col = i % 19;
-    cell.id = `${row},${col}`;
-    // Outline the center 7×7 area
-    if (row >= 6 && row <= 12) {
-        if (col === 6) cell.classList.add("center-left");
-        if (col === 12) cell.classList.add("center-right");
-    }
-
-    if (col >= 6 && col <= 12) {
-        if (row === 6) cell.classList.add("center-top");
-        if (row === 12) cell.classList.add("center-bottom");
-    }
-    
-    // Outline the center 3×3 area
-    if (row >= 8 && row <= 10) {
-        if (col === 8) cell.classList.add("center-left");
-        if (col === 10) cell.classList.add("center-right");
-    }
-
-    if (col >= 8 && col <= 10) {
-        if (row === 8) cell.classList.add("center-top");
-        if (row === 10) cell.classList.add("center-bottom");
-    }
-
-    // Single click = black stone OR remove stone
-    cell.addEventListener("click", () => {
-        const stone = cell.querySelector(".stone");
-
-        if (stone) {
-            stone.remove();
-
-            if (cell === lastCell) {
-                cell.classList.remove("last-move");
-                lastCell = null;
-            }
-
-            return;
+        cell.id = `${row},${col}`;
+        // Outline the center 7×7 area
+        if (row >= 6 && row <= 12) {
+            if (col === 6) cell.classList.add("center-left");
+            if (col === 12) cell.classList.add("center-right");
         }
 
-        const s = document.createElement("div");
-        s.className = "stone black";
-        cell.appendChild(s);
+        if (col >= 6 && col <= 12) {
+            if (row === 6) cell.classList.add("center-top");
+            if (row === 12) cell.classList.add("center-bottom");
+        }
+        
+        // Outline the center 3×3 area
+        if (row >= 8 && row <= 10) {
+            if (col === 8) cell.classList.add("center-left");
+            if (col === 10) cell.classList.add("center-right");
+        }
 
-        markLastMove(cell);
-    });
+        if (col >= 8 && col <= 10) {
+            if (row === 8) cell.classList.add("center-top");
+            if (row === 10) cell.classList.add("center-bottom");
+        }
 
-    // Double click = white stone
-    cell.addEventListener("dblclick", () => {
+        // Single click = black stone OR remove stone
+        cell.addEventListener("click", () => {
+            const stone = cell.querySelector(".stone");
+            const square = cells[row][col];
+            if (stone) {
+                stone.remove();
+                square.occ = false;
+                square.b = false;
+                if (cell === lastCell) {
+                    cell.classList.remove("last-move");
+                    lastCell = null;
+                }
 
-        if (cell.querySelector(".stone")) return;
+                return;
+            }
 
-        const s = document.createElement("div");
-        s.className = "stone white";
-        cell.appendChild(s);
+            const s = document.createElement("div");
+            square.occ = true;
+            square.b = true;
+            s.className = "stone black";
+            cell.appendChild(s);
 
-        markLastMove(cell);
-    });
+            markLastMove(cell);
+        });
 
-    board.appendChild(cell);
+        // Double click = white stone
+        cell.addEventListener("dblclick", () => {
+            const square = cells[row][col];
+            if (cell.querySelector(".stone")) return;
+
+            const s = document.createElement("div");
+            square.occ = true;
+            square.b = false;
+            s.className = "stone white";
+            cell.appendChild(s);
+
+            markLastMove(cell);
+        });
+
+        board.appendChild(cell);
+    }
 }
