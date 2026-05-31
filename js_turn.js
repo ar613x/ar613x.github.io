@@ -40,38 +40,32 @@ for (let i = 0; i < 19 * 19; i++) {
         if (row === 10) cell.classList.add("center-bottom");
     }
 
-    let clickTimer = null;
-
     cell.addEventListener("click", () => {
-        clearTimeout(clickTimer);
+        const stone = cell.querySelector(".stone");
 
-        clickTimer = setTimeout(() => {
-            const stone = cell.querySelector(".stone");
+        if (stone) {
+            stone.remove();
 
-            if (stone) {
-                stone.remove();
-
-                if (cell === lastCell) {
-                    cell.classList.remove("last-move");
-                    lastCell = null;
-                }
-
-                return;
-            }
-            if (sturn == 0) {
-                const s = document.createElement("div");
-                s.className = "stone black";
-                cell.appendChild(s);
-                sturn = 1;
-            } else {
-                const s = document.createElement("div");
-                s.className = "stone white";
-                cell.appendChild(s);
-                sturn = 0;
+            if (cell === lastCell) {
+                cell.classList.remove("last-move");
+                lastCell = null;
             }
 
-            markLastMove(cell);
-        }, 200);
+            return;
+        }
+        if (sturn == 0) {
+            const s = document.createElement("div");
+            s.className = "stone black";
+            cell.appendChild(s);
+            sturn = 1;
+        } else {
+            const s = document.createElement("div");
+            s.className = "stone white";
+            cell.appendChild(s);
+            sturn = 0;
+        }
+
+        markLastMove(cell);
     });
 
     board.appendChild(cell);

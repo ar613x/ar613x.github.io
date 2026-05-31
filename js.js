@@ -40,37 +40,30 @@ for (let i = 0; i < 361; i++) {
         if (row === 10) cell.classList.add("center-bottom");
     }
 
-    let clickTimer = null;
-
     // Single click = black stone OR remove stone
     cell.addEventListener("click", () => {
-        clearTimeout(clickTimer);
+        const stone = cell.querySelector(".stone");
 
-        clickTimer = setTimeout(() => {
-            const stone = cell.querySelector(".stone");
+        if (stone) {
+            stone.remove();
 
-            if (stone) {
-                stone.remove();
-
-                if (cell === lastCell) {
-                    cell.classList.remove("last-move");
-                    lastCell = null;
-                }
-
-                return;
+            if (cell === lastCell) {
+                cell.classList.remove("last-move");
+                lastCell = null;
             }
 
-            const s = document.createElement("div");
-            s.className = "stone black";
-            cell.appendChild(s);
+            return;
+        }
 
-            markLastMove(cell);
-        }, 200);
+        const s = document.createElement("div");
+        s.className = "stone black";
+        cell.appendChild(s);
+
+        markLastMove(cell);
     });
 
     // Double click = white stone
     cell.addEventListener("dblclick", () => {
-        clearTimeout(clickTimer);
 
         if (cell.querySelector(".stone")) return;
 
