@@ -76,4 +76,3 @@ for (let i = 0; i < 19 * 19; i++) {
 
     board.appendChild(cell);
 }
-</script>
