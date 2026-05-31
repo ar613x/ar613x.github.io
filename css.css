@@ -1,0 +1,63 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    touch-action: manipulation;
+}
+
+#board {
+    display: grid;
+    grid-template-columns: repeat(19, 30px);
+    grid-template-rows: repeat(19, 30px);
+}
+
+.cell {
+    width: 30px;
+    height: 30px;
+    border: 1px solid black;
+    background: burlywood;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.last-move {
+    background: #34cceb;
+}
+
+.stone {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.black {
+    background: radial-gradient(rgb(75,75,75), black);
+    border: 1px solid white;
+}
+
+.white {
+    background: radial-gradient(white, rgb(205,205,205));
+    border: 1px solid black;
+}
+
+/* Center squares outline */
+.center-top {
+    border-top: 3px solid red !important;
+}
+
+.center-bottom {
+    border-bottom: 3px solid red !important;
+}
+
+.center-left {
+    border-left: 3px solid red !important;
+}
+
+.center-right {
+    border-right: 3px solid red !important;
+}
