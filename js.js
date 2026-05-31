@@ -18,7 +18,7 @@ for (let i = 0; i < 361; i++) {
     const row = Math.floor(i / 19);
     const col = i % 19;
 
-    // Outline the center 5×5 area
+    // Outline the center 7×7 area
     if (row >= 6 && row <= 12) {
         if (col === 6) cell.classList.add("center-left");
         if (col === 12) cell.classList.add("center-right");
