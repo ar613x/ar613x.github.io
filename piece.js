@@ -4,7 +4,7 @@ const pieceList = [];
 
 class Piece {
     constructor(x, y, element) {
-        pieceList.appendChild(this);
+        pieceList.push(this);
         this.x = x;
         this.y = y;
         this.element = element;
