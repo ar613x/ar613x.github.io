@@ -46,22 +46,22 @@ class Piece {
     findGroup(foundPieces) {
         // initializing list
         const groupList = [];
-        if (!foundPieces) groupList.appendChild(this);
+        if (!foundPieces) groupList.push(this);
 
         // add new neighbors
         const neighbors = this.getNeighbors(true);
         neighbors.filter((piece) => {!(piece in foundPieces)});
-        for (const neighbor of neighbors) groupList.appendChild(neighbor);
+        for (const neighbor of neighbors) groupList.push(neighbor);
 
         // count new pieces as found
-        for (const piece of groupList) foundPieces.appendChild(piece);
+        for (const piece of groupList) foundPieces.push(piece);
 
         // add unfound pieces from new neigbors
         for (const neighbor of neighbors) {
             const newNewPieces = neighbor.findGroup(foundPieces);
             for (const newPiece of newNewPieces) {
-                groupList.appendChild(newPiece);
-                foundPieces.appendChild(newPiece);
+                groupList.push(newPiece);
+                foundPieces.push(newPiece);
             }
         }
 
@@ -94,7 +94,7 @@ function flipPieces(secondTime) {
     for (const piece of pieceList) {
         if (piece.findGroup().isSurrounded()) {
             if (secondTime) pieceList.remove(piece);
-            else needFlipping.appendChild(piece);
+            else needFlipping.push(piece);
         }
     }
     for (const piece of needFlipping) piece.flipColor();
