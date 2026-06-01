@@ -169,5 +169,6 @@ function moveWinCheck(cells) {
             return true;
             break;
         }
+    }
 }
 export { Square };
