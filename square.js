@@ -67,60 +67,61 @@ class Square {
     surrounded(cells) {
         return this.sames(this.neighbors(cells,false),false).length == 4;
     }
-    static findGroup(cells, square) {
-        let group = new Set();
-        function getMatches(cell, l) {
-            if (!cell || l.has(cell)) return;
-            l.add(cell);
-            let neighbors = square.same(square.neighbors(cells, cell));
-            for (let neighbor of neighbors) {
-                getMatches(neighbor);
-            }
-        }
-        getMatches(square, group);
-        for (let cell of group) {
-            cells[cell.x][cell.y] = null;
-        }
-        return Array.from(group);
-    }
-    static allGroups(cells) {
-        let groups = [];
-        let newCells = structuredClone(cells);
-        for (let i of newCells) {
-            if (!i) {
-                continue;
-            }
-            groups.push(findGroup(newCells,i));
-        }
-        return groups
-    }
-    static groupSurrounded(cells,group) {
-        let surrounded = true;
-        for (let i of group) {
-            if (i.neighbors(cells,false).length != false) {
-                surrounded = false;
-                break;
-            }
-        }
-        return surrounded;
-    }
-    static turnFlipCheck(cells) {
-        let groups = allGroups(cells);
-        for (let i of groups) {
-            if (groupSurrounded(cells,i)) {
-                for (let j of i) {
-                    j.flip();
-                }
-            }
+}
+function findGroup(cells, square) {
+    let group = new Set();
+    function getMatches(cell, l) {
+        if (!cell || l.has(cell)) return;
+        l.add(cell);
+        let neighbors = square.same(square.neighbors(cells, cell));
+        for (let neighbor of neighbors) {
+            getMatches(neighbor);
         }
     }
-    static afterTurnRemoveCheck(cells) {
-        let groups = allGroups(cells);
-        for (let i of groups) {
-            if (groupSurrounded(cells,i)) {
-                for (let j of i) {
-                    j.setColor(0);
-                }
+    getMatches(square, group);
+    for (let cell of group) {
+        cells[cell.x][cell.y] = null;
+    }
+
+    return Array.from(group);
+}
+function allGroups(cells) {
+    let groups = [];
+    let newCells = structuredClone(cells);
+    for (let i of newCells) {
+        if (!i) {
+            continue;
+        }
+        groups.push(findGroup(newCells,i));
+    }
+    return groups
+}
+function groupSurrounded(cells,group) {
+    let surrounded = true;
+    for (let i of group) {
+        if (i.neighbors(cells,false).length != false) {
+            surrounded = false;
+            break;
+        }
+    }
+    return surrounded;
+}
+function turnFlipCheck(cells) {
+    let groups = allGroups(cells);
+    for (let i of groups) {
+        if (groupSurrounded(cells,i)) {
+            for (let j of i) {
+                j.flip();
+            }
+        }
+    }
+}
+function afterTurnRemoveCheck(cells) {
+    let groups = allGroups(cells);
+    for (let i of groups) {
+        if (groupSurrounded(cells,i)) {
+            for (let j of i) {
+                j.setColor(0);
             }
         }
     }
