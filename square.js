@@ -41,7 +41,7 @@ class Square {
         }
         for (let i of n) {
             if (i.occ == false) {
-                n.splice(n.indexOf(i),1);
+                n.remove(i);
             }
         }
         return n;
@@ -52,13 +52,13 @@ class Square {
                 if (i.occ && i.b == this.b) {
                     continue;
                 } else {
-                    n.splice(n.indexOf(i), 1);
+                    n.remove(i);
                 }
             } else {
                 if (i.occ && i.b != this.b) {
                     continue;
                 } else {
-                    n.splice(n.indexOf(i));
+                    n.remove(i);
                 }
             }
         }
@@ -67,61 +67,60 @@ class Square {
     surrounded(cells) {
         return this.sames(this.neighbors(cells,false),false).length == 4;
     }
-}
-function findGroup(cells, square) {
-    let group = new Set();
-    function getMatches(cell, l) {
-        if (!cell || l.has(cell)) return;
-        l.add(cell);
-        let neighbors = square.same(square.neighbors(cells, cell));
-        for (let neighbor of neighbors) {
-            getMatches(neighbor);
+    static findGroup(cells, square) {
+        let group = new Set();
+        function getMatches(cell, l) {
+            if (!cell || l.has(cell)) return;
+            l.add(cell);
+            let neighbors = square.same(square.neighbors(cells, cell));
+            for (let neighbor of neighbors) {
+                getMatches(neighbor);
+            }
         }
-    }
-    getMatches(square, group);
-    for (let cell of group) {
-        cells[cell.x][cell.y] = null;
-    }
-
-    return Array.from(group);
-}
-function allGroups(cells) {
-    let groups = [];
-    let newCells = structuredClone(cells);
-    for (let i of newCells) {
-        if (!i) {
-            continue;
+        getMatches(square, group);
+        for (let cell of group) {
+            cells[cell.x][cell.y] = null;
         }
-        groups.push(findGroup(newCells,i));
+        return Array.from(group);
     }
-    return groups
-}
-function groupSurrounded(cells,group) {
-    let surrounded = true;
-    for (let i of group) {
-        if (i.neighbors(cells,false).length != false) {
-            surrounded = false;
-            break;
+    static allGroups(cells) {
+        let groups = [];
+        let newCells = structuredClone(cells);
+        for (let i of newCells) {
+            if (!i) {
+                continue;
+            }
+            groups.push(findGroup(newCells,i));
         }
+        return groups
     }
-    return surrounded;
-}
-function turnFlipCheck(cells) {
-    let groups = allGroups(cells);
-    for (let i of groups) {
-        if (groupSurrounded(cells,i)) {
-            for (let j of i) {
-                j.flip();
+    static groupSurrounded(cells,group) {
+        let surrounded = true;
+        for (let i of group) {
+            if (i.neighbors(cells,false).length != false) {
+                surrounded = false;
+                break;
+            }
+        }
+        return surrounded;
+    }
+    static turnFlipCheck(cells) {
+        let groups = allGroups(cells);
+        for (let i of groups) {
+            if (groupSurrounded(cells,i)) {
+                for (let j of i) {
+                    j.flip();
+                }
             }
         }
     }
-}
-function afterTurnRemoveCheck(cells) {
-    let groups = allGroups(cells);
-    for (let i of groups) {
-        if (groupSurrounded(cells,i)) {
-            for (let j of i) {
-                j.setColor(0);
+    static afterTurnRemoveCheck(cells) {
+        let groups = allGroups(cells);
+        for (let i of groups) {
+            if (groupSurrounded(cells,i)) {
+                for (let j of i) {
+                    j.setColor(0);
+                }
             }
         }
     }
