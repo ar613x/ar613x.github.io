@@ -1,14 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Connect Go</title>
-    <link rel="stylesheet" href="css.css">
-    <script src="js.js" defer></script>
-</head>
-<body>
-<div id="board"></div>
-
-<script>
 const board = document.getElementById("board");
 
 const pieceList = [];
@@ -156,7 +145,3 @@ for (let i = 0; i < 19 * 19; i++) {
 
     board.appendChild(cell);
 }
-</script>
-
-</body>
-</html>
