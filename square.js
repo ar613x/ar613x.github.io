@@ -40,15 +40,26 @@ class Square {
             n.concat([cells[this.x-1][this.y-1], cells[this.x-1][this.y+1], cells[this.x+1][this.y+1], cells[this.x+1][this.y-1]]);
         }
     }
-    sames(n) {
+    sames(n,di=false) {
         for (let i of n) {
-            if (i.occ && i.b == this.b) {
-                continue;
+            if (!di) {
+                if (i.occ && i.b == this.b) {
+                    continue;
+                } else {
+                    n.splice(n.indexOf(i), 1);
+                }
             } else {
-                n.splice(n.indexOf(i), 1);
+                if (i.occ && i.b != this.b) {
+                    continue;
+                } else {
+                    n.splice(n.indexOf(i));
+                }
             }
         }
         return n;
+    }
+    surrounded(cells) {
+        return this.sames(this.neighbors(cells,false),false).length == 4;
     }
 }
 function findGroup(cells, square) {
