@@ -1,9 +1,8 @@
 import {Square} from "./square.js";
-import {Piece, flipPieces} from "./piece.js";
 const board = document.getElementById("board");
 
 let lastCell = null;
-let sturn = 0; // 0 = black, 1 = white
+
 function markLastMove(cell) {
     if (lastCell) {
         lastCell.classList.remove("last-move");
@@ -20,7 +19,7 @@ for (let row = 0; row < 19; row++) {
         const cell = document.createElement("div");
         cell.className = "cell";
 
-        cell.id = `${row}-${col}`;
+        cell.id = `${row},${col}`;
         // Outline the center 7×7 area
         if (row >= 6 && row <= 12) {
             if (col === 6) cell.classList.add("center-left");
@@ -43,33 +42,43 @@ for (let row = 0; row < 19; row++) {
             if (row === 10) cell.classList.add("center-bottom");
         }
 
+        // Single click = black stone OR remove stone
         cell.addEventListener("click", () => {
             const stone = cell.querySelector(".stone");
             const square = cells[row][col];
-
             if (stone) {
+                stone.remove();
+                square.occ = false;
+                square.b = false;
+                if (cell === lastCell) {
+                    cell.classList.remove("last-move");
+                    lastCell = null;
+                }
+
                 return;
             }
-            if (sturn == 0) {
-                const s = document.createElement("div");
-                new Piece(row, col, s);
-                square.occ = true;
-                square.b = true;
-                s.className = "stone black";
-                cell.appendChild(s);
-                sturn = 1;
-            } else {
-                const s = document.createElement("div");
-                new Piece(row, col, s);
-                square.occ = true;
-                square.b = false;
-                s.className = "stone white";
-                cell.appendChild(s);
-                sturn = 0;
-            }
+
+            const s = document.createElement("div");
+            square.occ = true;
+            square.b = true;
+            s.className = "stone black";
+            cell.appendChild(s);
 
             markLastMove(cell);
-            flipPieces();
+        });
+
+        // Double click = white stone
+        cell.addEventListener("dblclick", () => {
+            const square = cells[row][col];
+            if (cell.querySelector(".stone")) return;
+
+            const s = document.createElement("div");
+            square.occ = true;
+            square.b = false;
+            s.className = "stone white";
+            cell.appendChild(s);
+
+            markLastMove(cell);
         });
 
         board.appendChild(cell);
