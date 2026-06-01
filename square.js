@@ -37,10 +37,16 @@ class Square {
         }
         return c;
     }
-    neighbors(cells,d=false) {
-        let n = [cells[this.x - 1][this.y], cells[this.x + 1][this.y], cells[this.x][this.y - 1], cells[this.x][this.y + 1]];
+    neighbors(cells,d=false,h=true,v=true) {
+        let n = [];
+        if (h) {
+            n.concat([cells[this.y][this.x-1], cells[this.y][this.x+1]]);
+        }
+        if (v) {
+            n.concat([cells[this.y-1][this.x], cells[this.y+1][this.x]]);
+        }
         if (d) {
-            n.concat([cells[this.x-1][this.y-1], cells[this.x-1][this.y+1], cells[this.x+1][this.y+1], cells[this.x+1][this.y-1]]);
+            n.concat([cells[this.y-1][this.x-1], cells[this.y-1][this.x+1], cells[this.y+1][this.x+1], cells[this.y+1][this.x-1]]);
         }
         for (let i of n) {
             if (i.occ == false) {
@@ -66,6 +72,33 @@ class Square {
             }
         }
         return n;
+    }
+    hGroup(cells) {
+        let n = new Set();
+        for (let i = 0; i<5; i++) {
+            for (let j of n) {
+                j.sames(j.neighbors(cells,false,true,false)).forEach(k => n.add(k));
+            }   
+        }
+        return Array.from(n);
+    }
+    vGroup(cells) {
+        let n = new Set();
+        for (let i = 0; i<5; i++) {
+            for (let j of n) {
+                j.sames(j.neighbors(cells,false,false,true)).forEach(k => n.add(k));
+            }
+        }
+        return Array.from(n);
+    }
+    dGroup(cells) {
+        let n = new Set();
+        for (let i = 0; i<5; i++) {
+            for (let j of n) {
+                j.sames(j.neighbors(cells,true,false,false)).forEach(k => n.add(k));
+            }
+        }
+        return Array.from(n);
     }
     surrounded(cells) {
         return this.sames(this.neighbors(cells,false),false).length == 4;
@@ -128,5 +161,19 @@ function afterTurnRemoveCheck(cells) {
             }
         }
     }
+}
+function win(cells,cell) {
+    return cell.hGroup(cells).length >=5 || cell.vGroup(cells).length >= 5 || cell.dGroup(cells) >= 5;
+}
+function moveWinCheck(cells) {
+    let newCells = structuredClone(cells);
+    for (let i of newCells) {
+        if (!i) {
+            continue;
+        }
+        if (win(newCells,i)) {
+            return true;
+            break;
+        }
 }
 export { Square };
