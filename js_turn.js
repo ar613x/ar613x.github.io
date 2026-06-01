@@ -1,4 +1,5 @@
 import {Square} from "./square.js";
+import {Piece, flipPieces} from "./piece.js";
 const board = document.getElementById("board");
 
 let lastCell = null;
@@ -51,6 +52,7 @@ for (let row = 0; row < 19; row++) {
             }
             if (sturn == 0) {
                 const s = document.createElement("div");
+                new Piece(row, col, s);
                 square.occ = true;
                 square.b = true;
                 s.className = "stone black";
@@ -58,6 +60,7 @@ for (let row = 0; row < 19; row++) {
                 sturn = 1;
             } else {
                 const s = document.createElement("div");
+                new Piece(row, col, s);
                 square.occ = true;
                 square.b = false;
                 s.className = "stone white";
@@ -66,6 +69,7 @@ for (let row = 0; row < 19; row++) {
             }
 
             markLastMove(cell);
+            flipPieces();
         });
 
         board.appendChild(cell);
