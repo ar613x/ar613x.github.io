@@ -75,28 +75,22 @@ class Square {
     }
     hGroup(cells) {
         let n = new Set();
-        for (let i = 0; i<5; i++) {
-            for (let j of n) {
-                j.sames(j.neighbors(cells,false,true,false)).forEach(k => n.add(k));
-            }   
+        for (let j of n) {
+            j.sames(j.neighbors(cells,false,true,false)).forEach(k => n.add(k));
         }
         return Array.from(n);
     }
     vGroup(cells) {
         let n = new Set();
-        for (let i = 0; i<5; i++) {
-            for (let j of n) {
-                j.sames(j.neighbors(cells,false,false,true)).forEach(k => n.add(k));
-            }
+        for (let j of n) {
+            j.sames(j.neighbors(cells,false,false,true)).forEach(k => n.add(k));
         }
         return Array.from(n);
     }
     dGroup(cells) {
         let n = new Set();
-        for (let i = 0; i<5; i++) {
-            for (let j of n) {
-                j.sames(j.neighbors(cells,true,false,false)).forEach(k => n.add(k));
-            }
+        for (let j of n) {
+            j.sames(j.neighbors(cells,true,false,false)).forEach(k => n.add(k));
         }
         return Array.from(n);
     }
