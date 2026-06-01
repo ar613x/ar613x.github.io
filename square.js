@@ -7,16 +7,19 @@ class Square {
         this.b = b;
     }
     setColor(c) {
-        if (c == 0) {
-            this.occ = false;
-            this.b = false;
-        } else {
-            this.occ = true;
-            if (c == 1) {
-                this.b = true;
-            } else {
+        switch (c) {
+            case 0:
+                this.occ = false;
                 this.b = false;
-            }
+                break;
+            case 1:
+                this.occ = true;
+                this.b = true;
+                break;
+            case 2:
+                this.occ = true;
+                this.b = false;
+                break;
         }
     }
     flip() {
@@ -41,7 +44,7 @@ class Square {
         }
         for (let i of n) {
             if (i.occ == false) {
-                n.remove(i);
+                n.splice(n.indexOf(i),1);
             }
         }
         return n;
@@ -52,13 +55,13 @@ class Square {
                 if (i.occ && i.b == this.b) {
                     continue;
                 } else {
-                    n.remove(i);
+                    n.splice(n.indexOf(i),1);
                 }
             } else {
                 if (i.occ && i.b != this.b) {
                     continue;
                 } else {
-                    n.remove(i);
+                    n.splice(n.indexOf(i),1);
                 }
             }
         }
