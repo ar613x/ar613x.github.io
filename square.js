@@ -6,7 +6,7 @@ class Square {
         this.occ = occ;
         this.b = b;
     }
-    set_color(c) {
+    setColor(c) {
         if (c == 0) {
             this.occ = false;
             this.b = false;
@@ -86,13 +86,15 @@ function findGroup(cells, square) {
     return Array.from(group);
 }
 function allGroups(cells) {
+    let groups = [];
     let newCells = structuredClone(cells);
     for (let i of newCells) {
         if (!i) {
             continue;
         }
-        findGroup(newCells,i);
+        groups.push(findGroup(newCells,i));
     }
+    return groups
 }
 function groupSurrounded(cells,group) {
     let surrounded = true;
@@ -103,5 +105,25 @@ function groupSurrounded(cells,group) {
         }
     }
     return surrounded;
+}
+function turnFlipCheck(cells) {
+    let groups = allGroups(cells);
+    for (let i of groups) {
+        if (groupSurrounded(cells,i)) {
+            for (let j of i) {
+                j.flip();
+            }
+        }
+    }
+}
+function afterTurnRemoveCheck(cells) {
+    let groups = allGroups(cells);
+    for (let i of groups) {
+        if (groupSurrounded(cells,i)) {
+            for (let j of i) {
+                j.setColor(0);
+            }
+        }
+    }
 }
 export { Square };
