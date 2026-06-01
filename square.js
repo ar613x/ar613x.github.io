@@ -39,6 +39,12 @@ class Square {
         if (d) {
             n.concat([cells[this.x-1][this.y-1], cells[this.x-1][this.y+1], cells[this.x+1][this.y+1], cells[this.x+1][this.y-1]]);
         }
+        for (let i of n) {
+            if (i.occ == false) {
+                n.splice(n.indexOf(i),1);
+            }
+        }
+        return n;
     }
     sames(n,di=false) {
         for (let i of n) {
@@ -87,5 +93,15 @@ function allGroups(cells) {
         }
         findGroup(newCells,i);
     }
+}
+function groupSurrounded(cells,group) {
+    let surrounded = true;
+    for (let i of group) {
+        if (i.neighbors(cells,false).length != false) {
+            surrounded = false;
+            break;
+        }
+    }
+    return surrounded;
 }
 export { Square };
