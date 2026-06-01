@@ -34,8 +34,11 @@ class Square {
         }
         return c;
     }
-    neighbors(cells) {
-        return [cells[this.x - 1][this.y], cells[this.x + 1][this.y], cells[this.x][this.y - 1], cells[this.x][this.y + 1]];
+    neighbors(cells,d=false) {
+        let n = [cells[this.x - 1][this.y], cells[this.x + 1][this.y], cells[this.x][this.y - 1], cells[this.x][this.y + 1]];
+        if (d) {
+            n.concat([cells[this.x-1][this.y-1], cells[this.x-1][this.y+1], cells[this.x+1][this.y+1], cells[this.x+1][this.y-1]]);
+        }
     }
     sames(n) {
         for (let i of n) {
@@ -47,8 +50,31 @@ class Square {
         }
         return n;
     }
-    diagNeighbors(cells) {
-        return [cells[this.x-1][this.y-1], cells[this.x-1][this.y], cells[this.x-1][this.y+1], cells[this.x][this.y-1], cells[this.x][this.y+1], cells[this.x+1][this.y-1], cells[this.x+1][this.y], cells[this.x+1][this.y+1]];
+}
+function findGroup(cells, square) {
+    let group = new Set();
+    function getMatches(cell, l) {
+        if (!cell || l.has(cell)) return;
+        l.add(cell);
+        let neighbors = square.same(square.neighbors(cells, cell));
+        for (let neighbor of neighbors) {
+            getMatches(neighbor);
+        }
+    }
+    getMatches(square, group);
+    for (let cell of group) {
+        cells[cell.x][cell.y] = null;
+    }
+
+    return Array.from(group);
+}
+function allGroups(cells) {
+    let newCells = structuredClone(cells);
+    for (let i of newCells) {
+        if (!i) {
+            continue;
+        }
+        findGroup(newCells,i);
     }
 }
 export { Square };
