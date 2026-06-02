@@ -33,8 +33,8 @@ class Piece {
         const down = Piece.pieceAt(this.x, this.y+1);
         const neighbors = [right, left, up, down];
         for (const neighbor of neighbors) {
-            if (!neighbor) neighbors.remove(neighbor);
-            if (sameColor && (neighbor.getColor() != this.getColor())) neighbors.remove(neighbor);
+            if (!neighbor) neighbors.splice(neighbors.indexOf(neighbor),1);
+            if (sameColor && (neighbor.getColor() != this.getColor())) neighbors.splice(neighbors.indexOf(neighbor),1);
         }
         return neighbors;
     }
@@ -93,7 +93,7 @@ function flipPieces(secondTime) {
     const needFlipping = [];
     for (const piece of pieceList) {
         if (piece.findGroup().isSurrounded()) {
-            if (secondTime) pieceList.remove(piece);
+            if (secondTime) pieceList.splice(pieceList.indexOf(piece),1);
             else needFlipping.push(piece);
         }
     }
