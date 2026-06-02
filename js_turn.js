@@ -4,6 +4,15 @@ const board = document.getElementById("board");
 
 let lastCell = null;
 let sturn = 0; // 0 = black, 1 = white
+function updateTurnMarker() {
+    if (sturn === 0) {
+        turnMarker.innerHTML =
+            "<span style='color:white;background:black;padding:4px;font-family:monospace;'>Black's turn</span>";
+    } else if (sturn === 1) {
+        turnMarker.innerHTML =
+            "<span style='color:black;background:white;padding:4px;border:1px solid black;font:monospace;'>White's turn</span>";
+    }
+}
 function markLastMove(cell) {
     if (lastCell) {
         lastCell.classList.remove("last-move");
@@ -57,7 +66,7 @@ for (let row = 0; row < 19; row++) {
                 square.b = true;
                 s.className = "stone black";
                 cell.appendChild(s);
-                sturn = 1;
+                sturn += 1;
             } else {
                 const s = document.createElement("div");
                 new Piece(row, col, s);
@@ -65,7 +74,7 @@ for (let row = 0; row < 19; row++) {
                 square.b = false;
                 s.className = "stone white";
                 cell.appendChild(s);
-                sturn = 0;
+                sturn -= 1;
             }
 
             markLastMove(cell);
@@ -75,3 +84,4 @@ for (let row = 0; row < 19; row++) {
         board.appendChild(cell);
     }
 }
+updateTurnMarker();

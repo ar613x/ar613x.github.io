@@ -1,10 +1,12 @@
 body {
     font-family: Arial, sans-serif;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
     padding: 20px;
     touch-action: manipulation;
 }
+
 
 #board {
     display: grid;
@@ -34,6 +36,17 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+
+#turnmarkercontainer {
+    margin-bottom: 15px;
+    text-align: center;
+}
+#turnmarker {
+    font-family: monospace;
+    font-size: 18px;
+    padding: 4px;
+    border-radius: 4px;
 }
 
 .black {
