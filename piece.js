@@ -27,10 +27,10 @@ class Piece {
     }
 
     getNeighbors(sameColor=false) {
-        const right = pieceAt(this.x+1, this.y);
-        const left = pieceAt(this.x-1, this.y);
-        const up = pieceAt(this.x, this.y-1);
-        const down = pieceAt(this.x, this.y+1);
+        const right = Piece.pieceAt(this.x+1, this.y);
+        const left = Piece.pieceAt(this.x-1, this.y);
+        const up = Piece.pieceAt(this.x, this.y-1);
+        const down = Piece.pieceAt(this.x, this.y+1);
         const neighbors = [right, left, up, down];
         for (const neighbor of neighbors) {
             if (!neighbor) neighbors.remove(neighbor);
