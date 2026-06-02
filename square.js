@@ -24,6 +24,7 @@ class Square {
         }
         document.dispatchEvent(new CustomEvent('updateCell', {
             detail: {
+                id = `${this.x},${this.y}`,
                 color: c
             }
         }));
@@ -66,29 +67,29 @@ class Square {
         return n;
     }
     sames(n,di=false) {
-        n = n.filter(i => i && i.occ && di==true ? i.b == this.b : i.b != this.b);
+        n = n.filter(i => i && i.occ && di==true ? i.b == this.b : i.b !== this.b);
         return n;
     }
     findGroup(cells) {
         let n = new Set([this]);
         cells[this.x][this.y] = null;
-        for (let i = 0; i < 20; i++) {
-            let x = new Set(n);
-            for (let j of x) {
-                j.sames(j.neighbors(cells)).forEach(k => n.add(k));
-                for (let k of j.sames(j.neighbors(cells,true,true,true,true),true)) {
-                    cells[k.x][k.y] = null;
-                }
+        for (let j of n) {
+            j.sames(j.neighbors(cells,false,true,true,false)).forEach(k => n.add(k));
+            for (let k of j.sames(j.neighbors(cells,true,false,false,true),true)) {
+                cells[k.x][k.y] = null;
+            }
+            if (n.size > 400) {
+                break;
             }
         }
         return n;
     }
     winGroup(cells, dir) {
         let n = new Set([this]);
-        for (let i = 0; i < 20; i++) {
-            let x = new Set(n);
-            for (let j of x) {
-                j.sames(j.neighbors(cells,dir=="d",dir=="h",dir=="v",dir=="d1")).forEach(k => n.add(k));
+        for (let j of n) {
+            j.sames(j.neighbors(cells,dir=="d",dir=="h",dir=="v",dir=="d1")).forEach(k => n.add(k));
+            if (n.size > 50) {
+                break;
             }
         }
         return n;
@@ -111,7 +112,7 @@ function allGroups(cells) {
 function groupSurrounded(cells,group) {
     let surrounded = true;
     for (let i of group) {
-        if (i.neighbors(cells,false,true,true,false).length != 4) {
+        if (i.neighbors(cells,false,true,true,false).length !== 4) {
             surrounded = false;
             break;
         }

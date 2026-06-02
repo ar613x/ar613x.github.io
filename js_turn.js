@@ -30,7 +30,7 @@ for (let row = 0; row < 19; row++) {
         cell.className = "cell";
         cells[row][col] = new Square(row, col, false, false, cell);
 
-        cell.id = `${row}-${col}`;
+        cell.id = `${row},${col}`;
         // Outline the center 7×7 area
         if (row >= 6 && row <= 12) {
             if (col === 6) cell.classList.add("center-left");
@@ -67,6 +67,9 @@ for (let row = 0; row < 19; row++) {
             }
         });
         cell.addEventListener("click", () => {
+            if (event.detail.id !== cell.id) {
+                return;
+            }
             const stone = cell.querySelector(".stone");
             const square = cells[row][col];
 
