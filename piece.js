@@ -19,22 +19,22 @@ class Piece {
     }
 
     getColor() {
-        return this.element.className == "solid black" ? "black" : "white";
+        return this.element.className == "stone black" ? "black" : "white";
     }
 
     setColor(color) {
-        this.element.className = (color == "black" ? "solid black" : "solid white");
+        this.element.className = (color == "black" ? "stone black" : "stone white");
     }
 
     getNeighbors(sameColor=false) {
-        const right = pieceAt(this.x+1, this.y);
-        const left = pieceAt(this.x-1, this.y);
-        const up = pieceAt(this.x, this.y-1);
-        const down = pieceAt(this.x, this.y+1);
+        const right = Piece.pieceAt(this.x+1, this.y);
+        const left = Piece.pieceAt(this.x-1, this.y);
+        const up = Piece.pieceAt(this.x, this.y-1);
+        const down = Piece.pieceAt(this.x, this.y+1);
         const neighbors = [right, left, up, down];
         for (const neighbor of neighbors) {
-            if (!neighbor) neighbors.remove(neighbor);
-            if (sameColor && (neighbor.getColor() != this.getColor())) neighbors.remove(neighbor);
+            if (!neighbor) neighbors.splice(neighbors.indexOf(neighbor),1);
+            if (sameColor && (neighbor.getColor() != this.getColor())) neighbors.splice(neighbors.indexOf(neighbor),1);
         }
         return neighbors;
     }
@@ -43,7 +43,7 @@ class Piece {
         return this.getNeighbors().length == 4;
     }
 
-    findGroup(foundPieces) {
+    findGroup(foundPieces=[]) {
         // initializing list
         const groupList = [];
         if (!foundPieces) groupList.push(this);
@@ -93,7 +93,7 @@ function flipPieces(secondTime) {
     const needFlipping = [];
     for (const piece of pieceList) {
         if (piece.findGroup().isSurrounded()) {
-            if (secondTime) pieceList.remove(piece);
+            if (secondTime) pieceList.splice(pieceList.indexOf(piece),1);
             else needFlipping.push(piece);
         }
     }

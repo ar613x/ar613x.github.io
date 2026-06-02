@@ -5,6 +5,7 @@ const board = document.getElementById("board");
 let lastCell = null;
 let sturn = 0; // 0 = black, 1 = white
 function updateTurnMarker() {
+    let turnMarker = document.getElementById('turnmarker')
     if (sturn === 0) {
         turnMarker.innerHTML =
             "<span style='color:white;background:black;padding:4px;font-family:monospace;'>Black's turn</span>";
