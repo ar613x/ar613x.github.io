@@ -19,11 +19,11 @@ class Piece {
     }
 
     getColor() {
-        return this.element.className == "solid black" ? "black" : "white";
+        return this.element.className == "stone black" ? "black" : "white";
     }
 
     setColor(color) {
-        this.element.className = (color == "black" ? "solid black" : "solid white");
+        this.element.className = (color == "black" ? "stone black" : "stone white");
     }
 
     getNeighbors(sameColor=false) {
