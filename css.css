@@ -10,13 +10,13 @@ body {
     display: grid;
     grid-template-columns: repeat(19, 30px);
     grid-template-rows: repeat(19, 30px);
+    background-image: url('https://raw.githubusercontent.com/ar613x/ar613x.github.io/refs/heads/main/cogboard.png');
 }
 
 .cell {
     width: 30px;
     height: 30px;
     border: 1px solid black;
-    background: burlywood;
     position: relative;
     box-sizing: border-box;
 }
