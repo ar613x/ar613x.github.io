@@ -70,7 +70,7 @@ class Square {
         n = n.filter(i => i && i.occ && di==true ? i.b == this.b : i.b !== this.b);
         return n;
     }
-    findGroup(cells) {
+    group(cells) {
         let n = new Set([this]);
         cells[this.x][this.y] = null;
         for (let j of n) {
@@ -105,7 +105,7 @@ function allGroups(cells) {
         if (!i) {
             continue;
         }
-        groups.push(i.findGroup(cells));
+        groups.push(i.group(cells));
     }
     return groups
 }
