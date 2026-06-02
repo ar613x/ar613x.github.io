@@ -72,39 +72,26 @@ class Square {
     findGroup(cells) {
         let n = new Set([this]);
         cells[this.x][this.y] = null;
-        for (let j of n) {
-            j.sames(j.neighbors(cells,false,true,true,false)).forEach(k => n.add(k));
-            for (let k of j.sames(j.neighbors(cells,true,false,false,true),true)) {
-                cells[k.x][k.y] = null;
+        for (let i = 0; i < 20; i++) {
+            let x = new Set(n);
+            for (let j of x) {
+                j.sames(j.neighbors(cells)).forEach(k => n.add(k));
+                for (let k of j.sames(j.neighbors(cells,true,true,true,true),true)) {
+                    cells[k.x][k.y] = null;
+                }
             }
         }
+        return n;
     }
-    hGroup(cells) {
+    winGroup(cells, dir) {
         let n = new Set([this]);
-        for (let j of n) {
-            j.sames(j.neighbors(cells,false,true,false,false)).forEach(k => n.add(k));
+        for (let i = 0; i < 20; i++) {
+            let x = new Set(n);
+            for (let j of x) {
+                j.sames(j.neighbors(cells,dir=="d",dir=="h",dir=="v",dir=="d1")).forEach(k => n.add(k));
+            }
         }
-        return Array.from(n);
-    }
-    vGroup(cells) {
-        let n = new Set([this]);
-        for (let j of n) {
-            j.sames(j.neighbors(cells,false,false,true,false)).forEach(k => n.add(k));
-        }
-        return Array.from(n);
-    }
-    dGroup(cells) {
-        let n = new Set([this]);
-        for (let j of n) {
-            j.sames(j.neighbors(cells,true,false,false,false)).forEach(k => n.add(k));
-        }
-        return Array.from(n);
-    }
-    d1Group(cells) {
-        let n = new Set([this]);
-        for (let j of n) {
-            j.sames(j.neighbors(cells,false,false,false,true)).forEach(k => n.add(k));
-        }
+        return n;
     }
     surrounded(cells) {
         return this.sames(this.neighbors(cells,false),false).length == 4;
@@ -152,7 +139,14 @@ function afterTurnRemoveCheck(cells) {
     }
 }
 function win(cells,cell) {
-    return cell.hGroup(cells).length >=5 || cell.vGroup(cells).length >= 5 || cell.dGroup(cells).length >= 5 || cell.d1Group(cells).length >= 5;
+    le w = false;
+    for (let dir of ["h","v","d","d1"]) {
+        if (cell.winGroup(cells,dir).size >= 5) {
+            w = true;
+            break;
+        }
+    }
+    return w;
 }
 function moveWinCheck(cells) {
     let newCells = structuredClone(cells);
