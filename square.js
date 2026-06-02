@@ -1,10 +1,11 @@
 // Random things that we don't want to define twice (mainly square class)
 class Square {
-    constructor(x, y, occ, b) {
+    constructor(x, y, occ, b, div) {
         this.x = x;
         this.y = y;
         this.occ = occ;
         this.b = b;
+        this.div = div;
     }
     setColor(c) {
         switch (c) {
