@@ -22,6 +22,11 @@ class Square {
                 this.b = false;
                 break;
         }
+        document.dispatchEvent(new CustomEvent('updateCell', {
+            detail: {
+                color: c
+            }
+        }));
     }
     flip() {
         if (this.occ) {
@@ -138,7 +143,7 @@ function afterTurnRemoveCheck(cells) {
     }
 }
 function win(cells,cell) {
-    return cell.hGroup(cells).length >=5 || cell.vGroup(cells).length >= 5 || cell.dGroup(cells).length >= 5;
+    return cell.hGroup(cells).length >=5 || cell.vGroup(cells).length >= 5 || cell.dGroup(cells).length >= 5 || cell.d1Group(cells).length >= 5;
 }
 function moveWinCheck(cells) {
     let newCells = structuredClone(cells);

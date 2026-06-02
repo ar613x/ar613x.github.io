@@ -51,7 +51,20 @@ for (let row = 0; row < 19; row++) {
             if (row === 8) cell.classList.add("center-top");
             if (row === 10) cell.classList.add("center-bottom");
         }
-
+        cell.addEventListener("updateCell", (event) => {
+            const stone = cell.querySelector(".stone");
+            if (!stone) {
+                stone = document.createElement("div");
+            }
+            const color = event.detail.color;
+            if (!color) {
+                cell.removeChild(stone);
+            } else if (color == 1) {
+                stone.className = "stone black";
+            } else if (color == 2) {
+                stone.className = "stone white";
+            }
+        });
         cell.addEventListener("click", () => {
             const stone = cell.querySelector(".stone");
             const square = cells[row][col];
@@ -79,6 +92,7 @@ for (let row = 0; row < 19; row++) {
 
             markLastMove(cell);
             flipPieces();
+            updateTurnMarker();
         });
 
         board.appendChild(cell);
