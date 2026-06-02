@@ -94,7 +94,6 @@ function findGroup(cells, square) {
     for (let cell of group) {
         cells[cell.x][cell.y] = null;
     }
-
     return Array.from(group);
 }
 function allGroups(cells) {
