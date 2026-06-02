@@ -43,7 +43,7 @@ class Piece {
         return this.getNeighbors().length == 4;
     }
 
-    findGroup(foundPieces) {
+    findGroup(foundPieces=[]) {
         // initializing list
         const groupList = [];
         if (!foundPieces) groupList.push(this);
