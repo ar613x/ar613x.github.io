@@ -30,7 +30,12 @@ class Square {
     }
     flip() {
         if (this.occ) {
-            this.b = !this.b;
+            switch (this.b) {
+                case true:
+                    this.setColor(2);
+                case false:
+                    this.setColor(1);
+            }
         }
     }
     get() {
