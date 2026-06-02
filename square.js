@@ -71,8 +71,12 @@ class Square {
     }
     findGroup(cells) {
         let n = new Set([this]);
+        cells[this.x][this.y] = null;
         for (let j of n) {
             j.sames(j.neighbors(cells,false,true,true,false)).forEach(k => n.add(k));
+            for (let k of j.sames(j.neighbors(cells,true,false,false,true),true)) {
+                cells[k.x][k.y] = null;
+            }
         }
     }
     hGroup(cells) {
