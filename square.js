@@ -96,22 +96,6 @@ class Square {
         return this.sames(this.neighbors(cells,false),false).length == 4;
     }
 }
-// function findGroup(cells, square) {
-//     let group = new Set();
-//     function getMatches(cell, l) {
-//         if (!cell || l.has(cell)) return;
-//         l.add(cell);
-//         let neighbors = cell.sames(cell.neighbors(cells, false, true, true), false);
-//         for (let neighbor of neighbors) {
-//             getMatches(neighbor, l);
-//         }
-//     }
-//     getMatches(square, group);
-//     for (let cell of group) {
-//         cells[cell.x][cell.y] = null;
-//     }
-//     return Array.from(group);
-// }
 function allGroups(cells) {
     let groups = [];
     let newCells = structuredClone(cells);
