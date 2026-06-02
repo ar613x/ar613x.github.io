@@ -139,7 +139,7 @@ function afterTurnRemoveCheck(cells) {
     }
 }
 function win(cells,cell) {
-    le w = false;
+    let w = false;
     for (let dir of ["h","v","d","d1"]) {
         if (cell.winGroup(cells,dir).size >= 5) {
             w = true;
