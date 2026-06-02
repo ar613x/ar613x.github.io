@@ -11,6 +11,7 @@ body {
     grid-template-columns: repeat(19, 30px);
     grid-template-rows: repeat(19, 30px);
     background-image: url('https://raw.githubusercontent.com/ar613x/ar613x.github.io/refs/heads/main/cogboard.png');
+    background-size: cover;
 }
 
 .cell {
