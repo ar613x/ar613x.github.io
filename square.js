@@ -56,7 +56,7 @@ class Square {
         return n;
     }
     sames(n,di=false) {
-        n = n.filter(i => i && i.occ && di==true ? i.b == this.b : i.b !== this.b);
+        n = n.filter(i => i && i.occ && di==true ? i.b == this.b : i.b != this.b);
         return n;
     }
     findGroup(cells) {
@@ -110,7 +110,7 @@ function allGroups(cells) {
 function groupSurrounded(cells,group) {
     let surrounded = true;
     for (let i of group) {
-        if (i.neighbors(cells,false,true,true,false).length !== 4) {
+        if (i.neighbors(cells,false,true,true,false).length != 4) {
             surrounded = false;
             break;
         }
