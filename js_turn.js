@@ -53,6 +53,9 @@ for (let row = 0; row < 19; row++) {
             if (row === 10) cell.classList.add("center-bottom");
         }
         cell.addEventListener("updateCell", (event) => {
+            if (event.detail.id !== cell.id) {
+                return;
+            }
             const stone = cell.querySelector(".stone");
             if (!stone) {
                 stone = document.createElement("div");
@@ -67,9 +70,6 @@ for (let row = 0; row < 19; row++) {
             }
         });
         cell.addEventListener("click", () => {
-            if (event.detail.id !== cell.id) {
-                return;
-            }
             const stone = cell.querySelector(".stone");
             const square = cells[row][col];
 
