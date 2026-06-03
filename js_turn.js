@@ -6,10 +6,10 @@ let lastCell = null;
 let sturn = 0; // 0 = black, 1 = white
 function updateTurnMarker() {
     let turnMarker = document.getElementById('turnmarker')
-    if (sturn === 0) {
+    if (sturn == 0) {
         turnMarker.innerHTML =
             "<span style='color:white;background:black;padding:4px;font-family:monospace;'>Black's turn</span>";
-    } else if (sturn === 1) {
+    } else if (sturn == 1) {
         turnMarker.innerHTML =
             "<span style='color:black;background:white;padding:4px;border:1px solid black;font:monospace;'>White's turn</span>";
     }
@@ -85,4 +85,5 @@ for (let row = 0; row < 19; row++) {
         board.appendChild(cell);
     }
 }
+
 updateTurnMarker();
