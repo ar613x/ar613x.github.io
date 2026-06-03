@@ -69,6 +69,8 @@ for (let row = 0; row < 19; row++) {
 
         // Double click = white stone
         cell.addEventListener("dblclick", () => {
+            clearTimeout(clickTimer);
+            clickTimer = setTimeout(() => {
             const square = cells[row][col];
             if (cell.querySelector(".stone")) return;
 
@@ -79,7 +81,7 @@ for (let row = 0; row < 19; row++) {
             cell.appendChild(s);
 
             markLastMove(cell);
-        });
+        }, 200);
 
         board.appendChild(cell);
     }
