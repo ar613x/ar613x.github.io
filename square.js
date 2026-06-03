@@ -1,11 +1,10 @@
 // Random things that we don't want to define twice (mainly square class)
 class Square {
-    constructor(x, y, occ, b, div) {
+    constructor(x, y, occ, b) {
         this.x = x;
         this.y = y;
         this.occ = occ;
         this.b = b;
-        this.div = div;
     }
     setColor(c) {
         switch (c) {
@@ -22,22 +21,28 @@ class Square {
                 this.b = false;
                 break;
         }
-        document.dispatchEvent(new CustomEvent('updateCell', {
+        let event = new CustomEvent('updateCell', {
+            bubbles: true,
             detail: {
-                id = `${this.x},${this.y}`,
+                id: `${this.y},${this.x}`,
                 color: c
             }
-        }));
+        });
+        document.dispatchEvent(event);
+        console.log(event)
     }
     flip() {
         if (this.occ) {
             switch (this.b) {
                 case true:
                     this.setColor(2);
+                    break;
                 case false:
                     this.setColor(1);
+                    break;
             }
         }
+        console.log(this);
     }
     get() {
         let c = 0;
@@ -51,32 +56,38 @@ class Square {
     }
     neighbors(cells,d=false,h=true,v=true,d1=false) {
         let n = [];
+
+        const safe = (x, y) => {
+            if (x < 0 || y < 0 || x > 18 || y > 18) return null;
+            return cells[y][x];
+        };
+
         if (h) {
-            n = n.concat([cells[this.y][this.x-1], cells[this.y][this.x+1]]);
+            n = n.concat([safe(this.x - 1, this.y), safe(this.x + 1, this.y)]);
         }
         if (v) {
-            n = n.concat([cells[this.y-1][this.x], cells[this.y+1][this.x]]);
+            n = n.concat([safe(this.x, this.y - 1), safe(this.x, this.y + 1)]);
         }
         if (d) {
-            n = n.concat([cells[this.y-1][this.x+1], cells[this.y+1][this.x-1]]);
+            n = n.concat([safe(this.x + 1, this.y - 1), safe(this.x - 1, this.y + 1)]);
         }
         if (d1) {
-            n = n.concat([cells[this.x-1][this.y-1], cells[this.x+1][this.y+1]])
+            n = n.concat([safe(this.x - 1, this.y - 1), safe(this.x + 1, this.y + 1)]);
         }
-        n = n.filter(i => i && i.occ);
-        return n;
+
+        return n.filter(i => i && i.occ);
     }
     sames(n,di=false) {
-        n = n.filter(i => i && i.occ && di==true ? i.b == this.b : i.b !== this.b);
+        n = n.filter(i => (i && i.occ) && (di==false ? i.b == this.b : i.b !== this.b));
         return n;
     }
     group(cells) {
         let n = new Set([this]);
-        cells[this.x][this.y] = null;
+        cells[this.y][this.x] = null;
         for (let j of n) {
             j.sames(j.neighbors(cells,false,true,true,false)).forEach(k => n.add(k));
-            for (let k of j.sames(j.neighbors(cells,true,false,false,true),true)) {
-                cells[k.x][k.y] = null;
+            for (let k of j.sames(j.neighbors(cells,false,true,true,false))) {
+                cells[k.y][k.x] = null;
             }
             if (n.size > 400) {
                 break;
@@ -95,17 +106,25 @@ class Square {
         return n;
     }
     surrounded(cells) {
-        return this.sames(this.neighbors(cells,false),false).length == 4;
+        return this.sames(this.neighbors(cells,false,true,true,false),true).length == 4;
     }
+}
+function clone(arr) {
+    let newArr = arr.map(row =>
+    row.map(c => c ? new Square(c.x, c.y, c.occ, c.b) : null)
+    );
+    return newArr;
 }
 function allGroups(cells) {
     let groups = [];
-    let newCells = structuredClone(cells);
-    for (let i of newCells) {
-        if (!i) {
-            continue;
-        }
-        groups.push(i.group(cells));
+    let newCells = clone(cells);
+    for (let j of newCells) {
+        for (let i of j) {
+            if (!i) {
+                continue;
+            }
+            groups.push(i.group(newCells));
+        }    
     }
     return groups
 }
@@ -121,18 +140,21 @@ function groupSurrounded(cells,group) {
 }
 function turnFlipCheck(cells) {
     let groups = allGroups(cells);
+    let flipped = new Set();
     for (let i of groups) {
         if (groupSurrounded(cells,i)) {
             for (let j of i) {
                 j.flip();
             }
+            flipped.add(i);
         }
     }
+    afterTurnRemoveCheck(cells,flipped)
 }
-function afterTurnRemoveCheck(cells) {
+function afterTurnRemoveCheck(cells,z) {
     let groups = allGroups(cells);
     for (let i of groups) {
-        if (groupSurrounded(cells,i)) {
+        if (groupSurrounded(cells,i) && !z.has(i)) {
             for (let j of i) {
                 j.setColor(0);
             }
@@ -142,7 +164,7 @@ function afterTurnRemoveCheck(cells) {
 function win(cells,cell) {
     let w = false;
     for (let dir of ["h","v","d","d1"]) {
-        if (cell.winGroup(cells,dir).size >= 5) {
+        if (cell.winGroup(cells,dir).size >= 6) {
             w = true;
             break;
         }
@@ -150,17 +172,24 @@ function win(cells,cell) {
     return w;
 }
 function moveWinCheck(cells) {
-    let newCells = structuredClone(cells);
-    for (let row of newCells) {
+    for (let row of cells) {
         for (let i of row) {
             if (!i) {
                 continue;
             }
-            if (win(newCells,i)) {
+            if (win(cells,i)) {
                 return true;
                 break;
             }
         }
     }
+    return false;
 }
-export { Square };
+function turnCheck(cells) {
+    turnFlipCheck(cells);
+    if (moveWinCheck(cells)) {
+        return true;
+    }
+    return false;
+}
+export { Square, turnCheck };

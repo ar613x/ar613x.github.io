@@ -1,15 +1,15 @@
-import {Square} from "./square.js";
-import {Piece, flipPieces} from "./piece.js";
+import {Square, turnCheck} from "./square.js";
+// import {Piece, flipPieces} from "./piece.js";
 const board = document.getElementById("board");
 
 let lastCell = null;
 let sturn = 0; // 0 = black, 1 = white
-function updateTurnMarker() {
+function updateTurnMarker(turn) {
     let turnMarker = document.getElementById('turnmarker')
-    if (sturn === 0) {
+    if (turn === 0) {
         turnMarker.innerHTML =
             "<span style='color:white;background:black;padding:4px;font-family:monospace;'>Black's turn</span>";
-    } else if (sturn === 1) {
+    } else if (turn === 1) {
         turnMarker.innerHTML =
             "<span style='color:black;background:white;padding:4px;border:1px solid black;font:monospace;'>White's turn</span>";
     }
@@ -22,13 +22,34 @@ function markLastMove(cell) {
     cell.classList.add("last-move");
     lastCell = cell;
 }
+
 let cells = [];
+document.addEventListener("updateCell", (event) => {
+    const cell = document.getElementById(event.detail.id)
+    if (!cell) return
+
+    let stone = cell.querySelector(".stone")
+    const color = event.detail.color
+
+    if (color === 0) {
+        if (stone) cell.removeChild(stone)
+        return
+    }
+
+    if (!stone) {
+        stone = document.createElement("div")
+        stone.classList.add("stone")
+        cell.appendChild(stone)
+    }
+
+    stone.className = color === 1 ? "stone black" : "stone white"
+})
 for (let row = 0; row < 19; row++) {
     cells[row] = [];
     for (let col = 0; col < 19; col++) {
         const cell = document.createElement("div");
         cell.className = "cell";
-        cells[row][col] = new Square(row, col, false, false, cell);
+        cells[row][col] = new Square(col, row, false, false);
 
         cell.id = `${row},${col}`;
         // Outline the center 7×7 area
@@ -52,54 +73,29 @@ for (let row = 0; row < 19; row++) {
             if (row === 8) cell.classList.add("center-top");
             if (row === 10) cell.classList.add("center-bottom");
         }
-        cell.addEventListener("updateCell", (event) => {
-            if (event.detail.id !== cell.id) {
-                return;
-            }
-            const stone = cell.querySelector(".stone");
-            if (!stone) {
-                stone = document.createElement("div");
-            }
-            const color = event.detail.color;
-            if (!color) {
-                cell.removeChild(stone);
-            } else if (color == 1) {
-                stone.className = "stone black";
-            } else if (color == 2) {
-                stone.className = "stone white";
-            }
-        });
         cell.addEventListener("click", () => {
             const stone = cell.querySelector(".stone");
-            const square = cells[row][col];
+            let square = cells[row][col];
 
             if (stone) {
                 return;
             }
             if (sturn == 0) {
-                const s = document.createElement("div");
-                new Piece(row, col, s);
-                square.occ = true;
-                square.b = true;
-                s.className = "stone black";
-                cell.appendChild(s);
+                square.setColor(1);
                 sturn += 1;
             } else {
-                const s = document.createElement("div");
-                new Piece(row, col, s);
-                square.occ = true;
-                square.b = false;
-                s.className = "stone white";
-                cell.appendChild(s);
+                square.setColor(2);
                 sturn -= 1;
             }
-
             markLastMove(cell);
-            flipPieces();
-            updateTurnMarker();
+            // flipPieces();
+            if (turnCheck(cells)) {
+                console.log(`Victory for ${sturn ? "white" : "black"}.`);
+            }
+            updateTurnMarker(sturn);
         });
 
         board.appendChild(cell);
     }
 }
-updateTurnMarker();
+updateTurnMarker(sturn);

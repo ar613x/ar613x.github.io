@@ -17,7 +17,7 @@ for (let row = 0; row < 19; row++) {
     for (let col = 0; col < 19; col++) {
         const cell = document.createElement("div");
         cell.className = "cell";
-        cells[row][col] = new Square(row, col, false, false, cell);
+        cells[row][col] = new Square(row, col, false, false);
 
         cell.id = `${row},${col}`;
         // Outline the center 7×7 area
