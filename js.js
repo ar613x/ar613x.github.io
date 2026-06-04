@@ -71,18 +71,18 @@ for (let row = 0; row < 19; row++) {
         cell.addEventListener("dblclick", () => {
             clearTimeout(clickTimer);
             clickTimer = setTimeout(() => {
-            const square = cells[row][col];
-            if (cell.querySelector(".stone")) return;
+                const square = cells[row][col];
+                if (cell.querySelector(".stone")) return;
 
-            const s = document.createElement("div");
-            square.occ = true;
-            square.b = false;
-            s.className = "stone white";
-            cell.appendChild(s);
+                const s = document.createElement("div");
+                square.occ = true;
+                square.b = false;
+                s.className = "stone white";
+                cell.appendChild(s);
 
-            markLastMove(cell);
-        }, 200);
-
+                markLastMove(cell);
+            }, 200);
+        });
         board.appendChild(cell);
     }
 }
