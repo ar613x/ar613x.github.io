@@ -44,7 +44,7 @@ class Square {
         }
         console.log(this);
     }
-    get() {
+    getColor() {
         let c = 0;
         if (this.occ) {
             c = 1;
@@ -93,7 +93,7 @@ class Square {
                 break;
             }
         }
-        return n;
+        return Array.from(n);
     }
     winGroup(cells, dir) {
         let n = new Set([this]);
@@ -138,23 +138,26 @@ function groupSurrounded(cells,group) {
     }
     return surrounded;
 }
+function groupColor(group) {
+    return group[0].getColor();
+}
 function turnFlipCheck(cells) {
     let groups = allGroups(cells);
-    let flipped = new Set();
+    let cols = [];
     for (let i of groups) {
         if (groupSurrounded(cells,i)) {
             for (let j of i) {
                 j.flip();
             }
-            flipped.add(i);
+            cols.push(groupColor(i));
         }
     }
-    afterTurnRemoveCheck(cells,flipped)
+    afterTurnRemoveCheck(cells,cols);
 }
-function afterTurnRemoveCheck(cells,z) {
+function afterTurnRemoveCheck(cells,cols) {
     let groups = allGroups(cells);
     for (let i of groups) {
-        if (groupSurrounded(cells,i) && !z.has(i)) {
+        if (groupSurrounded(cells,i) && groupColor(i) === cols[groups.indexOf(i)]) {
             for (let j of i) {
                 j.setColor(0);
             }
@@ -164,7 +167,7 @@ function afterTurnRemoveCheck(cells,z) {
 function win(cells,cell) {
     let w = false;
     for (let dir of ["h","v","d","d1"]) {
-        if (cell.winGroup(cells,dir).size >= 6) {
+        if (cell.winGroup(cells,dir).size >= 5) {
             w = true;
             break;
         }
