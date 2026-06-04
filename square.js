@@ -6,23 +6,43 @@ class Square {
         this.occ = occ;
         this.b = b;
     }
-    set_color(c) {
-        if (c == 0) {
-            this.occ = false;
-            this.b = false;
-        } else {
-            this.occ = true;
-            if (c == 1) {
-                this.b = true;
-            } else {
+    setColor(c) {
+        switch (c) {
+            case 0:
+                this.occ = false;
                 this.b = false;
-            }
+                break;
+            case 1:
+                this.occ = true;
+                this.b = true;
+                break;
+            case 2:
+                this.occ = true;
+                this.b = false;
+                break;
         }
+        let event = new CustomEvent('updateCell', {
+            bubbles: true,
+            detail: {
+                id: `${this.y},${this.x}`,
+                color: c
+            }
+        });
+        document.dispatchEvent(event);
+        console.log(event)
     }
     flip() {
         if (this.occ) {
-            this.b = !this.b;
+            switch (this.b) {
+                case true:
+                    this.setColor(2);
+                    break;
+                case false:
+                    this.setColor(1);
+                    break;
+            }
         }
+        console.log(this);
     }
     get() {
         let c = 0;
@@ -34,21 +54,142 @@ class Square {
         }
         return c;
     }
-    neighbors(cells) {
-        return [cells[this.x - 1][this.y], cells[this.x + 1][this.y], cells[this.x][this.y - 1], cells[this.x][this.y + 1]];
+    neighbors(cells,d=false,h=true,v=true,d1=false) {
+        let n = [];
+
+        const safe = (x, y) => {
+            if (x < 0 || y < 0 || x > 18 || y > 18) return null;
+            return cells[y][x];
+        };
+
+        if (h) {
+            n = n.concat([safe(this.x - 1, this.y), safe(this.x + 1, this.y)]);
+        }
+        if (v) {
+            n = n.concat([safe(this.x, this.y - 1), safe(this.x, this.y + 1)]);
+        }
+        if (d) {
+            n = n.concat([safe(this.x + 1, this.y - 1), safe(this.x - 1, this.y + 1)]);
+        }
+        if (d1) {
+            n = n.concat([safe(this.x - 1, this.y - 1), safe(this.x + 1, this.y + 1)]);
+        }
+
+        return n.filter(i => i && i.occ);
     }
-    sames(n) {
-        for (let i of n) {
-            if (i.occ && i.b == this.b) {
-                continue;
-            } else {
-                n.splice(n.indexOf(i), 1);
+    sames(n,di=false) {
+        n = n.filter(i => (i && i.occ) && (di==false ? i.b == this.b : i.b !== this.b));
+        return n;
+    }
+    group(cells) {
+        let n = new Set([this]);
+        cells[this.y][this.x] = null;
+        for (let j of n) {
+            j.sames(j.neighbors(cells,false,true,true,false)).forEach(k => n.add(k));
+            for (let k of j.sames(j.neighbors(cells,false,true,true,false))) {
+                cells[k.y][k.x] = null;
+            }
+            if (n.size > 400) {
+                break;
             }
         }
         return n;
     }
-    diagNeighbors(cells) {
-        return [cells[this.x-1][this.y-1], cells[this.x-1][this.y], cells[this.x-1][this.y+1], cells[this.x][this.y-1], cells[this.x][this.y+1], cells[this.x+1][this.y-1], cells[this.x+1][this.y], cells[this.x+1][this.y+1]];
+    winGroup(cells, dir) {
+        let n = new Set([this]);
+        for (let j of n) {
+            j.sames(j.neighbors(cells,dir=="d",dir=="h",dir=="v",dir=="d1")).forEach(k => n.add(k));
+            if (n.size > 50) {
+                break;
+            }
+        }
+        return n;
+    }
+    surrounded(cells) {
+        return this.sames(this.neighbors(cells,false,true,true,false),true).length == 4;
     }
 }
-export { Square };
+function clone(arr) {
+    let newArr = arr.map(row =>
+    row.map(c => c ? new Square(c.x, c.y, c.occ, c.b) : null)
+    );
+    return newArr;
+}
+function allGroups(cells) {
+    let groups = [];
+    let newCells = clone(cells);
+    for (let j of newCells) {
+        for (let i of j) {
+            if (!i) {
+                continue;
+            }
+            groups.push(i.group(newCells));
+        }    
+    }
+    return groups
+}
+function groupSurrounded(cells,group) {
+    let surrounded = true;
+    for (let i of group) {
+        if (i.neighbors(cells,false,true,true,false).length !== 4) {
+            surrounded = false;
+            break;
+        }
+    }
+    return surrounded;
+}
+function turnFlipCheck(cells) {
+    let groups = allGroups(cells);
+    let flipped = new Set();
+    for (let i of groups) {
+        if (groupSurrounded(cells,i)) {
+            for (let j of i) {
+                j.flip();
+            }
+            flipped.add(i);
+        }
+    }
+    afterTurnRemoveCheck(cells,flipped)
+}
+function afterTurnRemoveCheck(cells,z) {
+    let groups = allGroups(cells);
+    for (let i of groups) {
+        if (groupSurrounded(cells,i) && !z.has(i)) {
+            for (let j of i) {
+                j.setColor(0);
+            }
+        }
+    }
+}
+function win(cells,cell) {
+    let w = false;
+    for (let dir of ["h","v","d","d1"]) {
+        if (cell.winGroup(cells,dir).size >= 6) {
+            w = true;
+            break;
+        }
+    }
+    return w;
+}
+function moveWinCheck(cells) {
+    for (let row of cells) {
+        for (let i of row) {
+            if (!i) {
+                continue;
+            }
+            if (win(cells,i)) {
+                return true;
+                break;
+            }
+        }
+    }
+    return false;
+}
+function turnCheck(cells) {
+    turnFlipCheck(cells);
+    if (moveWinCheck(cells)) {
+        return true;
+    }
+    return false;
+}
+export { Square, turnCheck };
