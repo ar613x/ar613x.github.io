@@ -144,13 +144,17 @@ function groupColor(group) {
 function turnFlipCheck(cells) {
     let groups = allGroups(cells);
     let cols = [];
+    let flips = [];
     for (let i of groups) {
         if (groupSurrounded(cells,i)) {
             for (let j of i) {
-                j.flip();
+                flips.push(j);
             }
             cols.push(groupColor(i));
         }
+    }
+    for (let i of flips) {
+        i.flip();
     }
     afterTurnRemoveCheck(cells,cols);
 }
