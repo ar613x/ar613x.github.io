@@ -90,7 +90,7 @@ for (let row = 0; row < 19; row++) {
             markLastMove(cell);
             // flipPieces();
             if (turnCheck(cells)) {
-                alert(`Victory for ${sturn ? "white" : "black"}.`);
+                alert(`Victory for ${sturn ? "black" : "white"}.`);
             }
             updateTurnMarker(sturn);
         });
