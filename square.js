@@ -1,10 +1,19 @@
 // Random things that we don't want to define twice (mainly square class)
 class Square {
+    let squares = [];
+    static getSquare(x,y) {
+        for (let i of squares) {
+            if (i.x === x && i.y === y) {
+                return i;
+            }
+        }
+    }
     constructor(x, y, occ, b) {
         this.x = x;
         this.y = y;
         this.occ = occ;
         this.b = b;
+        squares.push(this);
     }
     setColor(c) {
         switch (c) {
