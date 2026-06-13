@@ -42,7 +42,6 @@ class Square {
                     break;
             }
         }
-        console.log(this);
     }
     getColor() {
         let c = 0;
