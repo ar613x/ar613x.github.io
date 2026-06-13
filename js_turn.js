@@ -25,25 +25,25 @@ function markLastMove(cell) {
 
 let cells = [];
 document.addEventListener("updateCell", (event) => {
-    const cell = document.getElementById(event.detail.id)
-    if (!cell) return
+    const cell = document.getElementById(event.detail.id);
+    if (!cell) return;
 
-    let stone = cell.querySelector(".stone")
-    const color = event.detail.color
+    let stone = cell.querySelector(".stone");
+    const color = event.detail.color;
 
     if (color === 0) {
-        if (stone) cell.removeChild(stone)
-        return
+        if (stone) cell.removeChild(stone);
+        return;
     }
 
     if (!stone) {
-        stone = document.createElement("div")
-        stone.classList.add("stone")
-        cell.appendChild(stone)
+        stone = document.createElement("div");
+        stone.classList.add("stone");
+        cell.appendChild(stone);
     }
 
-    stone.className = color === 1 ? "stone black" : "stone white"
-})
+    stone.className = color === 1 ? "stone black" : "stone white";
+});
 for (let row = 0; row < 19; row++) {
     cells[row] = [];
     for (let col = 0; col < 19; col++) {
