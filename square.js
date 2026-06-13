@@ -190,18 +190,19 @@ function moveWinCheck(cells) {
                 continue;
             }
             if (win(cells,i)) {
-                return true;
+                return [true,i];
                 break;
             }
         }
     }
-    return false;
+    return [false,null];
 }
 function turnCheck(cells) {
     turnFlipCheck(cells);
-    if (moveWinCheck(cells)) {
-        return true;
+    let w = moveWinCheck(cells);
+    if (w[0]) {
+        return [true, w[1]];
     }
-    return false;
+    return [false,null];
 }
 export { Square, turnCheck };

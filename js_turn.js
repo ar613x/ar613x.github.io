@@ -92,8 +92,10 @@ for (let row = 0; row < 19; row++) {
             }
             markLastMove(cell);
             // flipPieces();
-            if (turnCheck(cells)) {
+            const [win, winningCell] = turnCheck(cells);
+            if (win) {
                 console.log(`Victory for ${sturn ? "black" : "white"}.`);
+                ["h", "v", "d", "d1"].forEach(dir => {console.log(winningCell.winGroup(cells, dir));});
             }
             updateTurnMarker(sturn);
             console.log(cells);
