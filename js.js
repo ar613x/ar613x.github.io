@@ -1,4 +1,4 @@
-import {Square} from "./square.js";
+import {Square, cellsUpdate} from "./square.js";
 const board = document.getElementById("board");
 
 let lastCell = null;
@@ -48,8 +48,7 @@ for (let row = 0; row < 19; row++) {
             const square = cells[row][col];
             if (stone) {
                 stone.remove();
-                square.occ = false;
-                square.b = false;
+                square.setColor(0,false);
                 if (cell === lastCell) {
                     cell.classList.remove("last-move");
                     lastCell = null;
@@ -59,8 +58,8 @@ for (let row = 0; row < 19; row++) {
             }
 
             const s = document.createElement("div");
-            square.occ = true;
-            square.b = true;
+            square.setColor(1,false);
+            cellsUpdate(cells,square);
             s.className = "stone black";
             cell.appendChild(s);
 
@@ -75,8 +74,8 @@ for (let row = 0; row < 19; row++) {
                 if (cell.querySelector(".stone")) return;
 
                 const s = document.createElement("div");
-                square.occ = true;
-                square.b = false;
+                square.setColor(2,false);
+                cellsUpdate(cells,square);
                 s.className = "stone white";
                 cell.appendChild(s);
 

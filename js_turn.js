@@ -1,4 +1,4 @@
-import {Square, turnCheck} from "./square.js";
+import {Square, turnCheck, cellsUpdate} from "./square.js";
 // import {Piece, flipPieces} from "./piece.js";
 const board = document.getElementById("board");
 
@@ -43,9 +43,7 @@ document.addEventListener("updateCell", (event) => {
     }
 
     stone.className = color === 1 ? "stone black" : "stone white";
-    const row = parseInt(cell.id.split(",")[0]);
-    const col = parseInt(cell.id.split(",")[1]);
-    cells[row][col] = event.detail.cell;
+    cellsUpdate(cells,event.detail.cell);
 });
 let victory = false;
 for (let row = 0; row < 19; row++) {

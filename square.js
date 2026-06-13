@@ -6,7 +6,7 @@ class Square {
         this.occ = occ;
         this.b = b;
     }
-    setColor(c) {
+    setColor(c,g=true) {
         switch (c) {
             case 0:
                 this.occ = false;
@@ -21,15 +21,17 @@ class Square {
                 this.b = false;
                 break;
         }
-        let event = new CustomEvent('updateCell', {
-            bubbles: true,
-            detail: {
-                id: `${this.y},${this.x}`,
-                color: c,
-                cell: this
-            }
-        });
-        document.dispatchEvent(event);
+        if (g) {
+            let event = new CustomEvent('updateCell', {
+                bubbles: true,
+                detail: {
+                    id: `${this.y},${this.x}`,
+                    color: c,
+                    cell: this
+                }
+            });
+            document.dispatchEvent(event);
+        }
     }
     flip() {
         if (this.occ) {
@@ -211,4 +213,7 @@ function turnCheck(cells) {
     }
     return false;
 }
-export { Square, turnCheck };
+function cellsUpdate(cells,cell) {
+    cells[cell.y][cell.x] = cell;
+}
+export { Square, turnCheck, cellsUpdate };
