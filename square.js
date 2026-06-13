@@ -30,7 +30,6 @@ class Square {
             }
         });
         document.dispatchEvent(event);
-        console.log(event)
     }
     flip() {
         if (this.occ) {
@@ -140,14 +139,12 @@ function allGroups(cells) {
     return groups
 }
 function groupSurrounded(cells,group) {
-    let surrounded = true;
     for (let i of group) {
-        if (i.neighbors(cells,false,true,true,false).length !== 4) {
-            surrounded = false;
-            break;
+        if (i.neighbors(cells,false,true,true,false).length !== 4-[i.x,18-i.x,i.y,18-i.y].filter(j => j === 18).length) {
+            return false;
         }
     }
-    return surrounded;
+    return true;
 }
 function groupColor(group) {
     return group[0].getColor();
