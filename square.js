@@ -5,7 +5,6 @@ class Square {
         this.y = y;
         this.occ = occ;
         this.b = b;
-        Square.squares.push(this);
     }
     setColor(c) {
         switch (c) {
