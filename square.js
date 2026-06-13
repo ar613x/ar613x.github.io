@@ -79,7 +79,17 @@ class Square {
         return n.filter(i => i && i.occ);
     }
     sames(n,di=false) {
-        n = n.filter(i => (i && i.occ) && (di==false ? i.b == this.b : i.b !== this.b));
+        for (let i = n.length - 1; i >= 0; i--) {
+            if (!di) {
+                if (n[i].getColor() !== this.getColor()) {
+                    n.splice(i, 1);
+                }
+            } else {
+                if (n[i].getColor() === this.getColor()) {
+                    n.splice(i, 1);
+                }
+            }
+        }
         return n;
     }
     group(cells) {
