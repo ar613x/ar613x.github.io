@@ -4,14 +4,14 @@ const board = document.getElementById("board");
 
 let lastCell = null;
 let sturn = 0; // 0 = black, 1 = white
-function updateTurnMarker(turn) {
+function updateTurnMarker(turn,v=false) {
     let turnMarker = document.getElementById('turnmarker')
     if (turn === 0) {
         turnMarker.innerHTML =
-            "<span style='color:white;background:black;padding:4px;font-family:monospace;'>Black's turn</span>";
+            `<span style='color:white;background:black;padding:4px;font-family:monospace;'>Black's ${v ? "victory" : "turn"}</span>`;
     } else if (turn === 1) {
         turnMarker.innerHTML =
-            "<span style='color:black;background:white;padding:4px;border:1px solid black;font:monospace;'>White's turn</span>";
+            `<span style='color:black;background:white;padding:4px;border:1px solid black;font:monospace;'>White's ${v ? "victory" : "turn"}</span>`;
     }
 }
 function markLastMove(cell) {
@@ -47,6 +47,7 @@ document.addEventListener("updateCell", (event) => {
     const col = parseInt(cell.id.split(",")[1]);
     cells[row][col] = event.detail.cell;
 });
+let victory = false;
 for (let row = 0; row < 19; row++) {
     cells[row] = [];
     for (let col = 0; col < 19; col++) {
@@ -80,7 +81,7 @@ for (let row = 0; row < 19; row++) {
             const stone = cell.querySelector(".stone");
             let square = cells[row][col];
 
-            if (stone) {
+            if (stone || victory) {
                 return;
             }
             if (sturn == 0) {
@@ -91,12 +92,12 @@ for (let row = 0; row < 19; row++) {
                 sturn -= 1;
             }
             markLastMove(cell);
-            // flipPieces();
             const win = turnCheck(cells);
             if (win) {
                 console.log(`Victory for ${sturn ? "black" : "white"}.`);
+                victory = true;
             }
-            updateTurnMarker(sturn);
+            updateTurnMarker(victory ? 1-sturn : sturn,victory);
         });
 
         board.appendChild(cell);
