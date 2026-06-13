@@ -34,7 +34,8 @@ class Square {
             bubbles: true,
             detail: {
                 id: `${this.y},${this.x}`,
-                color: c
+                color: c,
+                cell: this
             }
         });
         document.dispatchEvent(event);
