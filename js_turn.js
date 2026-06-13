@@ -93,6 +93,7 @@ for (let row = 0; row < 19; row++) {
                 console.log(`Victory for ${sturn ? "black" : "white"}.`);
             }
             updateTurnMarker(sturn);
+            console.log(cells);
         });
 
         board.appendChild(cell);
