@@ -66,21 +66,19 @@ for (let row = 0; row < 19; row++) {
             markLastMove(cell);
         });
 
-        // Double click = white stone
-        cell.addEventListener("dblclick", () => {
-            clearTimeout(clickTimer);
-            clickTimer = setTimeout(() => {
-                const square = cells[row][col];
-                if (cell.querySelector(".stone")) return;
+        // Right click = white stone
+        cell.addEventListener("contextmenu", (ev) => {
+            ev.preventDefault();
+            const square = cells[row][col];
+            if (cell.querySelector(".stone")) return;
 
-                const s = document.createElement("div");
-                square.setColor(2,false);
-                cellsUpdate(cells,square);
-                s.className = "stone white";
-                cell.appendChild(s);
+            const s = document.createElement("div");
+            square.setColor(2,false);
+            cellsUpdate(cells,square);
+            s.className = "stone white";
+            cell.appendChild(s);
 
-                markLastMove(cell);
-            }, 200);
+            markLastMove(cell);
         });
         board.appendChild(cell);
     }
