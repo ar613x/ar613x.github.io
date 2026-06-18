@@ -6,16 +6,14 @@ body {
     padding: 20px;
     touch-action: manipulation;
 }
-/* 
-ul {
-    list-style-type: none;
-    text-align: center;
+
+h2 {
+    margin-left: 10px;
 }
 
-ul li::before {
-    content: "-";
-    margin-right: 15px;
-} */
+ul {
+    padding-left: 40px;
+}
 
 #board {
     border: 4px solid black;
