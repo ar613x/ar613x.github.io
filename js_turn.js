@@ -51,6 +51,7 @@ for (let row = 0; row < 19; row++) {
     for (let col = 0; col < 19; col++) {
         const cell = document.createElement("div");
         cell.className = "cell";
+        cell.classList.add("black-border");
         cells[row][col] = new Square(col, row, false, false);
 
         cell.id = `${row},${col}`;
@@ -96,8 +97,12 @@ for (let row = 0; row < 19; row++) {
                 victory = true;
             }
             updateTurnMarker(victory ? 1-sturn : sturn,victory);
+             if (!victory) Array.from(board.children).forEach(c => c.dispatchEvent(new CustomEvent("switchColor",{bubbles:false})));
         });
-
+        cell.addEventListener("switchColor", () => {
+            console.log(`${cell} switchColor`);
+            cell.classList.contains("black-border") ? cell.classList.replace("black-border","white-border") : cell.classList.replace("white-border","black-border");
+        });
         board.appendChild(cell);
     }
 }

@@ -9,6 +9,7 @@ body {
 
 
 #board {
+    border: 4px solid black;
     display: grid;
     grid-template-columns: repeat(19, 30px);
     grid-template-rows: repeat(19, 30px);
@@ -19,9 +20,17 @@ body {
 .cell {
     width: 30px;
     height: 30px;
-    border: 1px solid black;
     position: relative;
     box-sizing: border-box;
+}
+
+.black-border {
+    border: 1px solid black;
+}
+
+
+.white-border {
+    border: 1px solid white;
 }
 
 .last-move {
