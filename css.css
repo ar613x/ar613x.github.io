@@ -117,8 +117,8 @@ ul {
     }
     
     .stone {
-        width: calc(var(--cell-size) * 0.8);
-        height: calc(var(--cell-size) * 0.8);
+        width: auto * .8;
+        height: auto * .8;
     }
 
     #turnmarker {
