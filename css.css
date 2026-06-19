@@ -116,11 +116,6 @@ ul {
         aspect-ratio: 1;
     }
     
-    .stone {
-        width: 72%;
-        height: 72%;
-    }
-
     #turnmarker {
         font-size: 40px;
         padding: 10px;
