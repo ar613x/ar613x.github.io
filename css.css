@@ -115,6 +115,16 @@ ul {
         height: auto;
         aspect-ratio: 1;
     }
+
+    .stone {
+        width: 72% / 19;
+        height: 72% / 19;
+        border-radius: 50%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
     
     #turnmarker {
         font-size: 40px;
