@@ -94,7 +94,7 @@ ul {
     border-right: 3px solid greenyellow !important;
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 3000px) {
 
     body {
         padding: 10px;
@@ -105,6 +105,7 @@ ul {
         display: grid;
         width: 100%;
         grid-template-columns: repeat(19, 1fr);
+        grid-template-rows: auto;
         aspect-ratio: 1;
         --cell-size: calc(100% / 19);
     }
