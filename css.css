@@ -98,7 +98,7 @@ ul {
 
     body {
         padding: 25px;
-        font-size: 40px;
+        font-size: 25px;
     }
     
     #board {
@@ -122,13 +122,13 @@ ul {
     }
 
     #turnmarker {
-        font-size: 70px;
+        font-size: 40px;
         padding: 10px;
         border-radius: 5px;
     }
 
     button {
-        font-size: 60px;
+        font-size: 30px;
     }
     
 }
