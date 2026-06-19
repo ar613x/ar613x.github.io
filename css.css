@@ -117,8 +117,8 @@ ul {
     }
 
     .stone {
-        width: 3.7%;
-        height: 3.7%;
+        width: 50%;
+        height: 50%;
         border-radius: 50%;
         position: absolute;
         top: 50%;
