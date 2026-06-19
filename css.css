@@ -117,8 +117,8 @@ ul {
     }
     
     .stone {
-        width: auto * .8;
-        height: auto * .8;
+        width: 90% * 80% / 19;
+        height: 90% * 80% / 19;
     }
 
     #turnmarker {
