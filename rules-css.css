@@ -5,6 +5,7 @@ body {
     align-items: left;
     padding: 20px;
     touch-action: manipulation;
+    width: 100%;
 }
 
 h2 {
