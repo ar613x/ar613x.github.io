@@ -1,4 +1,3 @@
-// Random things that we don't want to define twice (mainly square class)
 class Square {
     constructor(x, y, occ, b) {
         this.x = x;
