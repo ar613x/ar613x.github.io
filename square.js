@@ -5,7 +5,7 @@ class Square {
         this.occ = occ;
         this.b = b;
     }
-    setColor(c,g=true) {
+    setColor(c) {
         switch (c) {
             case 0:
                 this.occ = false;
@@ -20,17 +20,15 @@ class Square {
                 this.b = false;
                 break;
         }
-        if (g) {
-            let event = new CustomEvent('updateCell', {
-                bubbles: true,
-                detail: {
-                    id: `${this.y},${this.x}`,
-                    color: c,
-                    cell: this
-                }
-            });
-            document.dispatchEvent(event);
-        }
+        let event = new CustomEvent('updateCell', {
+            bubbles: true,
+            detail: {
+                id: `${this.y},${this.x}`,
+                color: c,
+                cell: this
+            }
+        });
+        document.dispatchEvent(event);
     }
     flip() {
         if (this.occ) {
