@@ -165,21 +165,6 @@ function turnFlipCheck(cells) {
     for (let i of flips) {
         i.flip();
     }
-    afterTurnRemoveCheck(cells,cols);
-}
-function afterTurnRemoveCheck(cells,cols) {
-    let groups = allGroups(cells);
-    let removes = [];
-    for (let i of groups) {
-        if (groupSurrounded(cells,i) && groupColor(i) === cols[groups.indexOf(i)]) {
-            for (let j of i) {
-                removes.push(j);
-            }
-        }
-    }
-    for (let i of removes) {
-        i.setColor(0);
-    }
 }
 function win(cells,cell) {
     let w = false;
