@@ -30,7 +30,7 @@ class Square {
         let event = new CustomEvent('updateCell',{
             bubbles: true,
             detail: {
-                id=`${this.y},${this.x}`,
+                id: `${this.y},${this.x}`,
                 color: newCol,
                 cell: this
             }
