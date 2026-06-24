@@ -6,7 +6,7 @@ let lastCell = null;
 let sturn = 0; // 0 = black, 1 = red 2 = white 3 = blue
 function updateTurnMarker(turn,v=false) {
     let turnMarker = document.getElementById('turnmarker')
-    if (sturn === 0) {
+    if (turn === 0) {
         turnMarker.innerHTML =
             `<span style='color:red;background:black;padding:4px;border:1px solid red;font-family:monospace;'>Black's ${v ? "victory" : "turn"}</span>`;
     } else if (turn === 1) {
