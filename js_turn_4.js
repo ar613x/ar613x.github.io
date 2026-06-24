@@ -3,23 +3,31 @@ import {Square, turnCheck, cellsUpdate, makeAlliance, alliances} from "./square4
 const board = document.getElementById("board");
 
 let lastCell = null;
-let sturn = 0; // 0 = black, 1 = white
+let sturn = 0; // 0 = black, 1 = red 2 = white 3 = blue
 function updateTurnMarker(turn,v=false) {
     let turnMarker = document.getElementById('turnmarker')
-    if (turn === 0) {
+    if (sturn === 0) {
         turnMarker.innerHTML =
-            `<span style='color:white;background:black;padding:4px;font-family:monospace;'>Black's ${v ? "victory" : "turn"}</span>`;
+            `<span style='color:red;background:black;padding:4px;border:1px solid red;font-family:monospace;'>Black's ${v ? "victory" : "turn"}</span>`;
     } else if (turn === 1) {
         turnMarker.innerHTML =
-            `<span style='color:black;background:white;padding:4px;border:1px solid black;font:monospace;'>White's ${v ? "victory" : "turn"}</span>`;
+            `<span style='color:blue;background:red;padding:4px;border:1px solid blue;font-family:monospace;'>Red's ${v ? "victory" : "turn"}</span>`;
+    }
+    else if (turn === 2) {
+        turnMarker.innerHTML =
+            `<span style='color:black;background:white;padding:4px;border:1px solid black;font-family:monospace;'>White's ${v ? "victory" : "turn"}</span>`;
+    }
+    else if (turn === 3) {
+        turnMarker.innerHTML =
+            `<span style='color:white;background:blue;padding:4px;border:1px solid white;font-family:monospace;'>Blue's ${v ? "victory" : "turn"}</span>`;
     }
 }
 function markLastMove(cell) {
     if (lastCell) {
-        lastCell.classList.remove("last-move");
+        lastCell.classList.remove("last-move-4p");
     }
 
-    cell.classList.add("last-move");
+    cell.classList.add("last-move-4p");
     lastCell = cell;
 }
 
