@@ -115,7 +115,7 @@ for (let row = 0; row < 19; row++) {
                 console.log(`Turn number ${sturn}. Next player: ${sturn % 4 == 0 ? "black" : sturn % 4 == 1 ? "red" : sturn % 4 == 2 ? "white" : "blue"}`);
                 victory = false;
             }
-            updateTurnMarker(victory ? 1-sturn : sturn,victory);
+            updateTurnMarker(victory ? (sturn - 1) % 4 : sturn % 4, victory);
         });
         board.appendChild(cell);
     }
