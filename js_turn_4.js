@@ -1,7 +1,7 @@
 import {Square, turnCheck, cellsUpdate, makeAlliance, alliances} from "./square4.js";
 // import {Piece, flipPieces} from "./piece.js";
 const board = document.getElementById("board");
-
+let turn = 0;
 let lastCell = null;
 let sturn = 0; // 0 = black, 1 = red 2 = white 3 = blue
 function updateTurnMarker(turn,v=false) {
