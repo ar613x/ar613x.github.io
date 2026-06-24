@@ -59,13 +59,14 @@ class Square {
         return n.filter(i => i && i.col);
     }
     sames(n,di=false) {
+        let alliance = alliances.get(this.col) ?? [];
         for (let i = n.length - 1; i >= 0; i--) {
             if (!di) {
-                if (!alliances.get(this.col).includes(n[i].col)) {
+                if (!alliance.includes(n[i].col)) {
                     n.splice(i, 1);
                 }
             } else {
-                if (alliances.get(this.col).includes(n[i].col)) {
+                if (alliance.includes(n[i].col)) {
                     n.splice(i, 1);
                 }
             }
@@ -117,7 +118,7 @@ function allGroups(cells) {
     return groups
 }
 function groupColor(group) {
-    return group[0].color;
+    return group[0].col;
 }
 function groupSurrounded(cells,group) {
     let newCol = groupColor(group);
@@ -127,7 +128,11 @@ function groupSurrounded(cells,group) {
         }
         for (let j of i.neighbors(cells,false,true,true,false)) {
             if (j.color !== newCol) {
-                newCol = j.color;
+                if (newCol === i.col) {
+                    newCol = j.col;
+                } else {
+                    return [false];
+                }
             }
         }
     }
