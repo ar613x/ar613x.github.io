@@ -90,18 +90,30 @@ for (let row = 0; row < 19; row++) {
             if (stone || victory) {
                 return;
             }
-            if (sturn == 0) {
+            if (sturn % 4 == 0) {
                 square.setColor(1);
                 sturn += 1;
-            } else {
+            } else if (sturn % 4 == 1) {
                 square.setColor(2);
-                sturn -= 1;
+                sturn += 1;
+            }
+            else if (sturn % 4 == 2) {
+                square.setColor(3);
+                sturn += 1;
+            }
+            else if (sturn % 4 == 3) {
+                square.setColor(4);
+                sturn += 1
             }
             markLastMove(cell);
             const win = turnCheck(cells);
             if (win) {
                 console.log(`Victory for ${sturn ? "black" : "white"}.`);
                 victory = true;
+            }
+            else {
+                console.log(`Turn number ${sturn}. Next player: ${sturn % 4 == 0 ? "black" : sturn % 4 == 1 ? "red" : sturn % 4 == 2 ? "white" : "blue"}`);
+                victory = false;
             }
             updateTurnMarker(victory ? 1-sturn : sturn,victory);
         });
