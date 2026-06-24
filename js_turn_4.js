@@ -1,6 +1,7 @@
 import {Square, turnCheck, cellsUpdate, makeAlliance, alliances} from "./square4.js";
 // import {Piece, flipPieces} from "./piece.js";
 const board = document.getElementById("board");
+const colorNames = ["", "black", "white", "red", "blue"];
 let turn = 0;
 let lastCell = null;
 let sturn = 0; // 0 = black, 1 = red 2 = white 3 = blue
@@ -50,7 +51,7 @@ document.addEventListener("updateCell", (event) => {
         cell.appendChild(stone);
     }
 
-    stone.className = color === 1 ? "stone black" : "stone white";
+    stone.className = `stone ${colorNames[color]}`;
     cellsUpdate(cells,event.detail.cell);
 });
 let victory = false;
