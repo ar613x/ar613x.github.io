@@ -1,7 +1,7 @@
 import {Square, turnCheck, makeAlliance, alliances} from "./square4.js";
 window.ally = makeAlliance;
 window.setSquare = (x,y,col) => {
-    document.dispatchEvent(new CustomEvent("updateCell",{detail: {id: `${y},${x}`,c: col}}))
+    document.dispatchEvent(new CustomEvent("updateCell",{detail: {id: `${y},${x}`,color: col}}))
 };
 // import {Piece, flipPieces} from "./piece.js";
 const board = document.getElementById("board");
