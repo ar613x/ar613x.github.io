@@ -2,7 +2,7 @@ import {Square, turnCheck, makeAlliance, alliances} from "./square4.js";
 window.ally = makeAlliance;
 // import {Piece, flipPieces} from "./piece.js";
 const board = document.getElementById("board");
-const colors = ["black", "white", "red", "blue"];
+const colors = ["black", "red", "white", "blue"];
 const textBorderThings = new Map([
     ["black","red"],
     ["white","black"],
