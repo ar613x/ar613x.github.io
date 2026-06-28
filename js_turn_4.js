@@ -1,4 +1,5 @@
-import {Square, turnCheck, cellsUpdate, makeAlliance, alliances} from "./square4.js";
+import {Square, turnCheck, makeAlliance, alliances} from "./square4.js";
+window.ally = makeAlliance;
 // import {Piece, flipPieces} from "./piece.js";
 const board = document.getElementById("board");
 const colors = ["black", "white", "red", "blue"];
@@ -46,7 +47,6 @@ document.addEventListener("updateCell", (event) => {
     }
 
     stone.className = `stone ${colors[color-1]}`;
-    cellsUpdate(cells,event.detail.cell);
 });
 let victory = false;
 for (let row = 0; row < 19; row++) {
