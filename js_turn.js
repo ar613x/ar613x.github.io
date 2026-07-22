@@ -1,5 +1,4 @@
 import {Square, turnCheck} from "./square.js";
-// import {Piece, flipPieces} from "./piece.js";
 const board = document.getElementById("board");
 let lastCell = null;
 let sturn = 0; // 0 = black, 1 = white
@@ -44,7 +43,7 @@ document.addEventListener("updateCell", (event) => {
         stone.classList.add("stone");
         cell.appendChild(stone);
     }
-
+    window.board = cells;
     stone.className = color === 1 ? "stone black" : "stone white";
 });
 let victory = false;
