@@ -1,9 +1,6 @@
 import {Square, turnCheck} from "./square.js";
 // import {Piece, flipPieces} from "./piece.js";
 const board = document.getElementById("board");
-window.setSquare = (x,y,col) => {
-    document.dispatchEvent(new CustomEvent("updateCell",{detail: {id: `${y},${x}`,color: col}}))
-};
 let lastCell = null;
 let sturn = 0; // 0 = black, 1 = white
 function updateTurnMarker(turn,v=false) {
@@ -26,6 +23,9 @@ function markLastMove(cell) {
 }
 
 let cells = [];
+window.setSquare = (x,y,col) => {
+    cells[y][x].setColor(col);
+};
 window.board = cells;
 document.addEventListener("updateCell", (event) => {
     const cell = document.getElementById(event.detail.id);

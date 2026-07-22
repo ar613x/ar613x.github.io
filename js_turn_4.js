@@ -1,8 +1,5 @@
 import {Square, turnCheck, makeAlliance, alliances} from "./square4.js";
 window.ally = makeAlliance;
-window.setSquare = (x,y,col) => {
-    document.dispatchEvent(new CustomEvent("updateCell",{detail: {id: `${y},${x}`,color: col}}))
-};
 // import {Piece, flipPieces} from "./piece.js";
 const board = document.getElementById("board");
 const colors = ["black", "red", "white", "blue"];
@@ -31,6 +28,9 @@ function markLastMove(cell) {
 }
 
 let cells = [];
+window.setSquare = (x,y,col) => {
+    cells[y][x].setColor(col);
+};
 document.addEventListener("updateCell", (event) => {
     const cell = document.getElementById(event.detail.id);
     if (!cell) return;
