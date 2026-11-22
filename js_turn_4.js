@@ -1,4 +1,4 @@
-import {Square, turnCheck, makeAlliance, alliances} from "./square4.js";
+import {Square, turnCheck, printAlliances, makeAlliance, alliances} from "./square4.js";
 window.ally = makeAlliance;
 const board = document.getElementById("board");
 const colors = ["black", "red", "white", "blue"];
@@ -25,7 +25,6 @@ function markLastMove(cell) {
     cell.classList.add("last-move-4p");
     lastCell = cell;
 }
-
 let cells = [];
 window.setSquare = (x,y,col) => {
     cells[y][x].setColor(col);

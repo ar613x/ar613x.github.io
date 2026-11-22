@@ -6,12 +6,18 @@ let alliances = new Map([
     [4,[4]]
 ]);
 window.alliances = alliances;
+function sEqual(a,b) {
+    if (a.size === b.size && Array.from(a).every(n => b.has(n))) {
+        return true;
+    }
+    return false;
+}
 function makeAlliance(all1,all2) {
     let all1S = new Set(all1);
     let all2S = new Set(all2);
     for (let [i,o] of alliances) {
         let allOS = new Set(o);
-        if (all1S.size === allOS.size && o.every(n => all1S.has(n))) {
+        if (sEqual(all1S,allOS)) {
             alliances.set(i,o.concat(all2));
             continue;
         }
@@ -21,6 +27,28 @@ function makeAlliance(all1,all2) {
         }
     }
     window.alliances = alliances;
+    printAlliances(alliances);
+}
+function printAlliances(list) {
+    let a = [];
+    for (let [i,o] of list) {
+        a.push(new Set(o));
+    }
+    let s = [];
+    for (let i of a) {
+        let valid = true;
+        for (let j of s) {
+            if (sEqual(i,j)) {
+                valid = false;
+                break;
+            }
+        }
+        if (valid) {
+            s.push(i);
+        }
+    }
+    a = a.map((n) => Array.from(n).map((m) => colors[m-1]).map((v) => v.charAt(0).toUpperCase()+v.slice(1)));
+    document.getElementById("alliances").textContent = `Alliances: ${a.map((n) => n.slice(0,-1).join(", ")+" and "+n.at(-1)).join("\n")}`;
 }
 class Square {
     constructor(x,y,col) {
@@ -206,4 +234,4 @@ function turnCheck(cells) {
     }
     return false;
 }
-export { Square, turnCheck, makeAlliance, alliances };
+export { Square, turnCheck, printAlliances, makeAlliance, alliances };
