@@ -188,6 +188,18 @@ function groupSurrounded(cells,group) {
     }
     return [true,newCol];
 }
+function validatePlacement(cells, x, y, c) {
+    let square = cells[y][x];
+    let socc = square.col;
+    square.col = c;
+    let newCells = clone(cells);
+    if (groupSurrounded(cells,newCells[y][x].group(newCells))) {
+        square.col = socc;
+        return false;
+    }
+    square.col = socc;
+    return true;
+}
 function turnFlipCheck(cells) {
     let groups = allGroups(cells);
     let flips = new Map();
@@ -220,18 +232,34 @@ function moveWinCheck(cells) {
                 continue;
             }
             if (win(cells,i)) {
-                return true;
-                break;
+                return [true,i.col];
             }
         }
     }
-    return false;
+    return [false, null];
+}
+function boardFull(cells) {
+    for (let row of cells) {
+        for (let i of row) {
+            if (!i) {
+                continue;
+            }
+            if (!i.col) {
+                return false;
+            }
+        }
+    }
+    return true;
 }
 function turnCheck(cells) {
     turnFlipCheck(cells);
-    if (moveWinCheck(cells)) {
-        return true;
+    let v = moveWinCheck(cells);
+    if (v[0]) {
+        return [1, v[1]];
     }
-    return false;
+    // if (boardFull(cells)) {
+    //     return [2, null];
+    // }
+    return [0, null];
 }
-export { Square, turnCheck, printAlliances, makeAlliance, alliances };
+export { Square, turnCheck, printAlliances, makeAlliance, alliances, validatePlacement };

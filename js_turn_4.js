@@ -1,4 +1,4 @@
-import {Square, turnCheck, printAlliances, makeAlliance, alliances} from "./square4.js";
+import {Square, turnCheck, printAlliances, makeAlliance, alliances, validatePlacement} from "./square4.js";
 window.ally = makeAlliance;
 const board = document.getElementById("board");
 const colors = ["black", "red", "white", "blue"];
@@ -84,14 +84,15 @@ for (let row = 0; row < 19; row++) {
             const stone = cell.querySelector(".stone");
             let square = cells[row][col];
 
-            if (stone || victory) {
+            if (stone || victory || !validatePlacement(cells, col, row, sturn+1)) {
                 return;
             }
             square.setColor(sturn+1);
             markLastMove(cell);
             const win = turnCheck(cells);
-            if (win) {
+            if (win[0] === 1) {
                 victory = true;
+                sturn = win[1]-1;
             } else {
                 sturn = sturn === 3 ? 0 : sturn+1;
             }
