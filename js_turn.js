@@ -1,4 +1,4 @@
-import {Square, turnCheck} from "./square.js";
+import {Square, turnCheck, validatePlacement} from "./square.js";
 const board = document.getElementById("board");
 let lastCell = null;
 let sturn = 0; // 0 = black, 1 = white
@@ -80,7 +80,7 @@ for (let row = 0; row < 19; row++) {
             const stone = cell.querySelector(".stone");
             let square = cells[row][col];
 
-            if (stone || victory) {
+            if (stone || victory || !validatePlacement(cells, col, row, sturn+1)) {
                 return;
             }
             if (sturn == 0) {
@@ -92,22 +92,23 @@ for (let row = 0; row < 19; row++) {
             }
             markLastMove(cell);
             const win = turnCheck(cells);
-            if (win === 1) {
+            if (win[0] === 1) {
                 victory = true;
-            } else if (win === 2) {
+                sturn = 1-(win[1]-1);
+            } else if (win[0] === 2) {
                 victory = true;
                 let counts = [0, 0];
                 for (let row of cells) {
                     for (let i of row) {
                         if (i.occ) {
-                            counts[i.color-1] += 1;
+                            counts[i.getColor()-1] += 1;
                         }
                     }
                 }
                 if (counts[0] > counts[1]) {
-                    sturn = 0;
-                } else {
                     sturn = 1;
+                } else {
+                    sturn = 0;
                 }
             }
             updateTurnMarker(victory ? 1-sturn : sturn,victory);

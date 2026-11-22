@@ -140,6 +140,34 @@ function groupSurrounded(cells,group) {
     }
     return true;
 }
+function validatePlacement(cells, x, y, c) {
+    let square = cells[y][x];
+    let socc = square.occ;
+    let sb = square.b;
+    switch (c) {
+        case 0:
+            square.occ = false;
+            square.b = false;
+            break;
+        case 1:
+            square.occ = true;
+            square.b = true;
+            break;
+        case 2:
+            square.occ = true;
+            square.b = false;
+            break;
+    }
+    let newCells = clone(cells);
+    if (groupSurrounded(cells,newCells[y][x].group(newCells))) {
+        square.occ = socc;
+        square.b = sb;
+        return false;
+    }
+    square.occ = socc;
+    square.b = sb;
+    return true;
+}
 function groupColor(group) {
     return group[0].getColor();
 }
@@ -176,12 +204,12 @@ function moveWinCheck(cells) {
                 continue;
             }
             if (win(cells,i)) {
-                return true;
+                return [true, i.getColor()];
                 break;
             }
         }
     }
-    return false;
+    return [false, null];
 }
 function boardFull(cells) {
     for (let row of cells) {
@@ -195,12 +223,13 @@ function boardFull(cells) {
 }
 function turnCheck(cells) {
     turnFlipCheck(cells);
-    if (moveWinCheck(cells)) {
-        return 1;
+    let v = moveWinCheck(cells);
+    if (v[0]) {
+        return [1, v[1]];
     }
     if (boardFull(cells)) {
-        return 2;
+        return [2, null];
     }
-    return 0;
+    return [0, null];
 }
-export { Square, turnCheck };
+export { Square, turnCheck, validatePlacement };
